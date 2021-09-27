@@ -17,10 +17,18 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->text('token');
+            $table->text('fcm_token');
+            $table->string('address');
+            $table->enum('gender', ['Laki-Laki', 'Perempuan']);
+            $table->string('avatar');
+            $table->string('phone');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
+
         });
     }
 
