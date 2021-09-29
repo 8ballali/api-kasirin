@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->text('token');
             $table->text('fcm_token');
             $table->string('address');
-            $table->enum('gender', ['Laki-Laki', 'Perempuan']);
+            $table->enum('gender', ['Male', 'Female']);
             $table->string('avatar');
             $table->string('phone');
             $table->timestamp('email_verified_at')->nullable();

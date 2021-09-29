@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\AboutsController;
-use App\Http\Controllers\api\AdminController;
+use App\Http\Controllers\api\CategoryController;
 use App\Http\Controllers\api\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,7 +20,7 @@ Route::post('login', [LoginController::class, 'login']);
 Route::middleware(['api_key'])->group(function () {
 
     Route::resource('/abouts', AboutsController::class)->except(['create', 'edit']);
-    Route::resource('/admin', AdminController::class)->except(['create', 'edit']);
+    Route::resource('/category', CategoryController::class)->except(['create', 'edit']);
     Route::get('/test', function () {
         return 'oek';
     });
