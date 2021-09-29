@@ -16,6 +16,7 @@ class CreateTokoTable extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('address');
             $table->unsignedBigInteger('user_id');
             $table->softDeletes();
             $table->timestamps();

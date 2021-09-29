@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Categories;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategoryController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,12 +17,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category = Categories::all();
+        $product = Product::all();
         $response = [
-            'message' => 'data kategori',
-            'data' => $category
+            'message' => "Data Product",
+            'data' => $product
         ];
-        return response()->json($response, 200);
+        return response()->json($response, Response::HTTP_OK);
     }
 
     /**
@@ -47,6 +46,11 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required'],
             'store_id' => ['required'],
+            'category_id' => ['required'],
+            'image' => ['required'],
+            'price' => ['required', 'numeric'],
+            'stock' => ['required'],
+            'barcode' => ['required'],
 
         ]);
         if ($validator->fails()) {
@@ -54,10 +58,10 @@ class CategoryController extends Controller
         }
 
         try {
-            $category = Categories::create($request->all());
+            $product = Product::create($request->all());
             $response = [
-                'message' => 'Data Category Created',
-                'data' => $category
+                'message' => 'Data Product Created',
+                'data' => $product
             ];
 
             return response()->json($response, Response::HTTP_CREATED);
@@ -77,12 +81,12 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Categories::findOrFail($id);
+        $product = Product::findOrFail($id);
         $response = [
-            'message' => "Detail Category",
-            'data' => $category,
+            'message' => 'Detail Product',
+            'data' => $product
         ];
-        return response()->json($category, Response::HTTP_OK);
+        return response()->json($response, Response::HTTP_OK);
     }
 
     /**
@@ -105,23 +109,27 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Categories::findOrFail($id);
+        $product = Product::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
             'name' => ['required'],
+            'category_id' => ['required'],
+            'price' => ['required', 'numeric'],
+            'stock' => ['required'],
+
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
-            $category->update($request->all());
+            $product->update($request->all());
             $response = [
-                'message' => 'Data Category Updated',
-                'data' => $category
+                'message' => 'Data Product Updated',
+                'data' => $product
             ];
 
-            return response()->json($response, Response::HTTP_OK);
+            return response()->json($response, Response::HTTP_CREATED);
 
         } catch (QueryException $e) {
             return response()->json([
@@ -138,12 +146,12 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Categories::findOrFail($id);
+        $product = Product::findOrFail($id);
 
         try {
-            $category->delete();
+            $product->delete();
             $response = [
-                'message' => 'Data Category Deleted'
+                'message' => 'Data Product Deleted'
             ];
 
             return response()->json($response, Response::HTTP_OK);
