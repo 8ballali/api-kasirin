@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\AboutsController;
+use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\CategoryController;
 use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\api\ProductController;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('login', [LoginController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
 Route::middleware(['api_key'])->group(function () {
 
     Route::resource('/abouts', AboutsController::class)->except(['create', 'edit']);

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use phpDocumentor\Reflection\Types\Nullable;
 
 class CreateUsersTable extends Migration
 {
@@ -17,8 +18,8 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->text('token');
-            $table->text('fcm_token');
+            $table->text('token')->nullable();
+            $table->text('fcm_token')->nullable();
             $table->string('address');
             $table->enum('gender', ['Male', 'Female']);
             $table->string('avatar');
