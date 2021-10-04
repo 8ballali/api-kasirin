@@ -19,6 +19,7 @@ class ProductController extends Controller
     {
         $product = Product::all();
         $response = [
+            'success' => true,
             'message' => "Data Product",
             'data' => $product
         ];
@@ -60,6 +61,7 @@ class ProductController extends Controller
         try {
             $product = Product::create($request->all());
             $response = [
+                'success' => true,
                 'message' => 'Data Product Created',
                 'data' => $product
             ];
@@ -129,7 +131,7 @@ class ProductController extends Controller
                 'data' => $product
             ];
 
-            return response()->json($response, Response::HTTP_CREATED);
+            return response()->json($response, Response::HTTP_OK);
 
         } catch (QueryException $e) {
             return response()->json([

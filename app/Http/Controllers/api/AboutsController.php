@@ -124,6 +124,7 @@ class AboutsController extends Controller
         try {
             $abouts->update($request->all());
             $response = [
+                'success' => true,
                 'message' => 'Data Abouts Updated',
                 'data' => $abouts
             ];

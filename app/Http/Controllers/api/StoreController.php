@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Store;
+use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class StoreController extends Controller
 {
@@ -14,7 +19,13 @@ class StoreController extends Controller
      */
     public function index()
     {
-        //
+        $stores = Store::all();
+        $response = [
+            'success' => true,
+            'message' => 'List Toko',
+            'data' => $stores,
+        ];
+        return response()->json($response, Response::HTTP_OK);
     }
 
     /**
@@ -35,7 +46,28 @@ class StoreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'name' => ['required'],
+            'address' => ['required'],
+            'user_id' => ['required'],
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        try {
+            $stores = Store::create($request->all());
+            $response = [
+                'success' => true,
+                'message' => 'Data Stores Created',
+                'data' => $stores
+            ];
+            return response()->json($response, Response::HTTP_CREATED);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => "Failed". $e->errorInfo
+            ]);
+        }
     }
 
     /**
@@ -46,7 +78,13 @@ class StoreController extends Controller
      */
     public function show($id)
     {
-        //
+        $stores = Store::findOrFail($id);
+        $response = [
+            'success' => true,
+            'message'=> 'Detail Toko',
+            'data' => $stores,
+        ];
+        return response()->json($response, Response::HTTP_OK);
     }
 
     /**
@@ -69,7 +107,33 @@ class StoreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $stores = Store::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => ['required'],
+            'address' => ['required'],
+            'user_id' => ['required'],
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        try {
+            $stores->update($request->all());
+            $response = [
+                'success' => true,
+                'message' => 'Data Stores Updated',
+                'data' => $stores
+            ];
+
+            return response()->json($response, Response::HTTP_OK);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => "Failed" . $e->errorInfo
+            ]);
+        }
+
     }
 
     /**
@@ -80,6 +144,22 @@ class StoreController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $stores = Store::findOrFail($id);
+
+        try {
+            $stores->delete();
+            $response = [
+                'success'=> true,
+                'message' => 'Data Stores Deleted',
+
+            ];
+
+            return response()->json($response, Response::HTTP_OK);
+
+        } catch (QueryException $e ) {
+            return response()->json([
+                'message' => "Failed " . $e->errorInfo
+            ]);
+        }
     }
 }
