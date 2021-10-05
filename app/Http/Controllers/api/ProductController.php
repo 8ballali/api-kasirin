@@ -15,9 +15,13 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $product = Product::all();
+        $product = Product::when(($request->header('category_id')), function ($query) use ($request)
+        {
+            $query->where('category_id', $request->header('category_id'));
+        })
+        ->get();
         $response = [
             'success' => true,
             'message' => "Data Product",

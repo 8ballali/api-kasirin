@@ -16,9 +16,13 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $category = Categories::all();
+        $category = Categories::when(($request->header('store_id')), function ($query) use ($request)
+        {
+            $query->where('store_id', $request->header('store_id'));
+        })
+        ->get();
         $response = [
             'message' => 'data kategori',
             'data' => $category

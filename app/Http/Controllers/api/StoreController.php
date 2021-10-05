@@ -17,9 +17,13 @@ class StoreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $stores = Store::all();
+        $stores = Store::when(($request->header('user_id')), function ($query) use ($request)
+        {
+            $query->where('user_id', $request->header('user_id'));
+        })
+        ->get();
         $response = [
             'success' => true,
             'message' => 'List Toko',
