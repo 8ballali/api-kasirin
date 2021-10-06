@@ -3,9 +3,13 @@
 use App\Http\Controllers\api\AboutsController;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\CategoryController;
+use App\Http\Controllers\api\FaqController;
 use App\Http\Controllers\api\LoginController;
+use App\Http\Controllers\api\PrivacyPolicyController;
 use App\Http\Controllers\api\ProductController;
 use App\Http\Controllers\api\StoreController;
+use App\Http\Controllers\api\TransactionController;
+use App\Http\Controllers\api\TransactionDetailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +31,10 @@ Route::middleware(['api_key', 'auth_token'])->group(function () {
     Route::resource('/category', CategoryController::class)->except(['create', 'edit']);
     Route::resource('/product', ProductController::class)->except(['create', 'edit']);
     Route::resource('/stores', StoreController::class)->except(['create', 'edit']);
+    Route::resource('/faq', FaqController::class)->except(['create', 'edit']);
+    Route::resource('/privacy', PrivacyPolicyController::class)->except(['create', 'edit']);
+    Route::resource('/transaction', TransactionController::class)->except(['create', 'edit']);
+    Route::resource('/detail-transaction', TransactionDetailController::class)->except(['create', 'edit']);
     Route::get('/test', function () {
         return 'oek';
     });

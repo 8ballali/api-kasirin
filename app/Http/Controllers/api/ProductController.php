@@ -62,6 +62,11 @@ class ProductController extends Controller
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        $file = $request->file('image');
+        $nama_file = time() . "_" . $file->getClientOriginalName();
+        $tujuan_upload = 'storage';
+        $file->move($tujuan_upload, $nama_file);
+
         try {
             $product = Product::create($request->all());
             $response = [

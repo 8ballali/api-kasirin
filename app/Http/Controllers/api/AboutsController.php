@@ -21,6 +21,7 @@ class AboutsController extends Controller
     {
         $about = About::get();
         $response = [
+            'success' => true,
             'message' => 'Data About us',
             'data' => $about
         ];
@@ -58,6 +59,7 @@ class AboutsController extends Controller
         try {
             $abouts = About::create($request->all());
             $response = [
+                'success' => true,
                 'message' => 'Data Abouts Created',
                 'data' => $abouts
             ];
@@ -82,6 +84,7 @@ class AboutsController extends Controller
     {
         $abouts = About::findOrFail($id);
         $response = [
+            'success' => true,
             'message' => "Detail of Abouts",
             'data' => $abouts,
         ];
@@ -151,6 +154,7 @@ class AboutsController extends Controller
         try {
             $abouts->delete();
             $response = [
+                'success' => true,
                 'message' => 'Data About Us Deleted'
             ];
 

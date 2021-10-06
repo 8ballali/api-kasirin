@@ -20,7 +20,7 @@ class Auth_Token
         $user_id = request()->header('user_id');
         $auth_token = request()->header('auth_token');
         $user = User::find($user_id);
-        if($user->token != $auth_token){
+        if(@$user->token != $auth_token){
             return response()->json([
                 'message' => 'Sesi Telah Habis Silakan Login Kembali',
                 'code' => 405,

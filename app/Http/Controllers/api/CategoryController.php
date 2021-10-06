@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Categories;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
@@ -24,6 +25,7 @@ class CategoryController extends Controller
         })
         ->get();
         $response = [
+            'success' => true,
             'message' => 'data kategori',
             'data' => $category
         ];
@@ -60,6 +62,7 @@ class CategoryController extends Controller
         try {
             $category = Categories::create($request->all());
             $response = [
+                'success' => true,
                 'message' => 'Data Category Created',
                 'data' => $category
             ];
@@ -83,6 +86,7 @@ class CategoryController extends Controller
     {
         $category = Categories::findOrFail($id);
         $response = [
+            'success' => true,
             'message' => "Detail Category",
             'data' => $category,
         ];
