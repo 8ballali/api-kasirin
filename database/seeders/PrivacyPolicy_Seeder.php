@@ -15,11 +15,8 @@ class PrivacyPolicy_Seeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
-        foreach (range(1, 3) as $value) {
-            DB::table('privacy_policy')->insert([
-                'content' =>$faker->text(),
-            ]);
-        }
+        DB::table('privacy_policy')->insert([
+            'content' => 'Contoh Privacy and Policy'
+        ]);
     }
 }
