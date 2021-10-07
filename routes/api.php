@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\AboutsController;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\CategoryController;
+use App\Http\Controllers\api\ContactUsController;
 use App\Http\Controllers\api\FaqController;
 use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\api\PrivacyPolicyController;
@@ -32,6 +33,7 @@ Route::middleware(['api_key', 'auth_token'])->group(function () {
     Route::resource('/product', ProductController::class)->except(['create', 'edit']);
     Route::resource('/stores', StoreController::class)->except(['create', 'edit']);
     Route::resource('/faq', FaqController::class)->except(['create', 'edit']);
+    Route::resource('/contact', ContactUsController::class)->except(['create', 'edit']);
     Route::resource('/privacy', PrivacyPolicyController::class)->except(['create', 'edit']);
     Route::resource('/transaction', TransactionController::class)->except(['create', 'edit']);
     Route::resource('/detail-transaction', TransactionDetailController::class)->except(['create', 'edit']);

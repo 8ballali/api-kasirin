@@ -3,29 +3,25 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Transaction_detail;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
-class TransactionDetailController extends Controller
+class ContactUsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $detail_transaction = Transaction_detail::when(($request->header('transaction_id')), function ($query) use ($request)
-        {
-            $query->where('transaction_id', $request->header('transaction_id'));
-        })
-        ->get();
+        $contact = Contact::all();
         $response = [
             'success' => true,
-            'message' => 'Detail Transaction',
-            'data' => $detail_transaction
+            'message' => 'Data Contact Us',
+            'data' => $contact
         ];
         return response()->json($response, Response::HTTP_OK);
     }
@@ -48,26 +44,29 @@ class TransactionDetailController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
-            'product_id' => ['required'],
-            'qty' => ['required'],
-            'transaction_id' => ['required'],
+        $validator = Validator::make($request->all(), [
+            'name' => ['required'],
+            'image' => ['required'],
+            'content' => ['required'],
+
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
-            $detail_transaction = Transaction_detail::create($request->all());
+            $contact = Contact::create($request->all());
             $response = [
                 'success' => true,
-                'message' => 'Detail Transaction Created',
-                'data' => $detail_transaction
+                'message' => 'Contact us has been Created',
+                'data' => $contact
             ];
+
             return response()->json($response, Response::HTTP_CREATED);
+
         } catch (QueryException $e) {
             return response()->json([
-                'message' => "Failed". $e->errorInfo
+                'message' => "Failed" . $e->errorInfo
             ]);
         }
     }
