@@ -10,13 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         $product = Product::when(($request->header('category_id')), function ($query) use ($request)
         {
             $query->where('category_id', $request->header('category_id'));
@@ -30,147 +24,101 @@ class ProductController extends Controller
         return response()->json($response, Response::HTTP_OK);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => ['required'],
-            'store_id' => ['required'],
-            'category_id' => ['required'],
-            'image' => ['required'],
-            'price' => ['required', 'numeric'],
-            'stock' => ['required'],
-            'barcode' => ['required'],
-
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        // $file = $request->file('image');
-        // $nama_file = time() . "_" . $file->getClientOriginalName();
-        // $tujuan_upload = 'storage';
-        // $file->move($tujuan_upload, $nama_file);
-
-        try {
-            $product = Product::create($request->all());
-            $response = [
-                'success' => true,
-                'message' => 'Data Product Created',
-                'data' => $product
-            ];
-
-            return response()->json($response, Response::HTTP_CREATED);
-
-        } catch (QueryException $e) {
-            return response()->json([
-                'message' => "Failed" . $e->errorInfo
-            ]);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $product = Product::findOrFail($id);
-        $response = [
-            'message' => 'Detail Product',
-            'data' => $product
+        $data = $request->all();
+        $rules = [
+            'name'          => 'required',
+            'store_id'   => 'required',
+            'category_id' => 'required',
+            'image'         => 'required',
+            'price'         => 'required',
+            'stock'         => 'required',
+            'barcode'         => 'required',
         ];
-        return response()->json($response, Response::HTTP_OK);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
-
-        $validator = Validator::make($request->all(), [
-            'name' => ['required'],
-            'category_id' => ['required'],
-            'price' => ['required', 'numeric'],
-            'stock' => ['required'],
-
-        ]);
+        $image = $request->image->store('image', 'public');
+        $data['image'] = $image;
+        $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+            return response()->json($validator->errors(), 400);
         }
-
-        try {
-            $product->update($request->all());
-            $response = [
-                'message' => 'Data Product Updated',
-                'data' => $product
-            ];
-
-            return response()->json($response, Response::HTTP_OK);
-
-        } catch (QueryException $e) {
-            return response()->json([
-                'message' => "Failed" . $e->errorInfo
-            ]);
-        }
+        $product = Product::create($data);
+        $response = [
+            'success'      => true,
+            'message'    => 'Data Product Created',
+            'data'      => $product,
+        ];
+        return response()->json($response, Response::HTTP_CREATED);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function update(Request $request, Product $product)
     {
-        $product = Product::findOrFail($id);
+        $data = $request->all();
+        dd($data);
 
-        try {
-            $product->delete();
-            $response = [
-                'message' => 'Data Product Deleted'
-            ];
-
-            return response()->json($response, Response::HTTP_OK);
-
-        } catch (QueryException $e ) {
-            return response()->json([
-                'message' => "Failed " . $e->errorInfo
-            ]);
+        $rules = [
+            'name'          => 'required',
+            'store_id'      => 'required',
+            'category_id'   => 'required',
+            'image'         => 'required',
+            'price'         => 'required',
+            'stock'         => 'required',
+            'barcode'       => 'required',
+        ];
+        // if ($request->image) {
+        //     $image = $request->image->store('image', 'public');
+        //     $data['image'] = $image;
+        // }
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
         }
+        $product->update($data);
+        $response = [
+            'success'   => true,
+            'message'   => 'Data Product Created',
+            'data'      => $product,
+        ];
+        return response()->json($response, Response::HTTP_CREATED);
+
+        // $validator = Validator::make($request->all(), [
+        //     'name' => ['required'],
+        //     'store_id' => ['required'],
+        //     'category_id' => ['required'],
+        //     'image' => ['required'],
+        //     'price' => ['required', 'numeric'],
+        //     'stock' => ['required'],
+        //     'barcode' => ['required'],
+
+        // ]);
+        // if ($validator->fails()) {
+        //     return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        // }
+        // if ($request->image) {
+        //     $image = $request->image('image');
+
+        //     $nama_image = time() . "_" . $image->getClientOriginalName();
+
+        //     // isi dengan nama folder tempat kemana image diupload
+        //     $tujuan_upload = 'storage';
+        //     $image->move($tujuan_upload, $nama_image);
+        //     @unlink(public_path('/') . '/storage/' . $product->image);
+        // }else{
+        //     $nama_image=$product->image;
+        // }
+        // try {
+        //     $product->update($request->all());
+        //     $response = [
+        //         'message' => 'Data Product Updated',
+        //         'data' => $product
+        //     ];
+
+        //     return response()->json($response, Response::HTTP_OK);
+
+        // } catch (QueryException $e) {
+        //     return response()->json([
+        //         'message' => "Failed" . $e->errorInfo
+        //     ]);
+        // }
     }
 }

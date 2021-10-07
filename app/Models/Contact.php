@@ -9,5 +9,8 @@ class Contact extends Model
 {
     protected $table = "contact_us";
     protected $fillable = ['name', 'image', 'content'];
+    public function getImageAttribute($value){
+        return url('storage/'. $value);
+    }
     use HasFactory;
 }

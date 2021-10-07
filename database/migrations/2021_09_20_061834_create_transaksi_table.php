@@ -16,6 +16,7 @@ class CreateTransaksiTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('price');
+            $table->string('pay');
             $table->string('discount');
             $table->string('change');
             $table->softDeletes();

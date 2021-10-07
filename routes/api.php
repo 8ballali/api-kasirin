@@ -30,9 +30,11 @@ Route::middleware(['api_key', 'auth_token'])->group(function () {
 
     Route::resource('/abouts', AboutsController::class)->except(['create', 'edit']);
     Route::resource('/category', CategoryController::class)->except(['create', 'edit']);
-    Route::resource('/product', ProductController::class)->except(['create', 'edit']);
     Route::resource('/stores', StoreController::class)->except(['create', 'edit']);
     Route::resource('/faq', FaqController::class)->except(['create', 'edit']);
+    Route::get('product', [ProductController::class, 'index']);
+    Route::post('product/store', [ProductController::class, 'store']);
+    Route::post('product/edit/{product}', [ProductController::class, 'update']);
     Route::resource('/contact', ContactUsController::class)->except(['create', 'edit']);
     Route::resource('/privacy', PrivacyPolicyController::class)->except(['create', 'edit']);
     Route::resource('/transaction', TransactionController::class)->except(['create', 'edit']);

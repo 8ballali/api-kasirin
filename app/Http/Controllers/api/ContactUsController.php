@@ -44,31 +44,25 @@ class ContactUsController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => ['required'],
-            'image' => ['required'],
-            'content' => ['required'],
-
-        ]);
+        $data = $request->all();
+        $rules = [
+            'name'=> 'required',
+            'image'   => 'required',
+            'content' => 'required',
+        ];
+        $image = $request->image->store('image', 'public');
+        $data['image'] = $image;
+        $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+            return response()->json($validator->errors(), 400);
         }
-
-        try {
-            $contact = Contact::create($request->all());
-            $response = [
-                'success' => true,
-                'message' => 'Contact us has been Created',
-                'data' => $contact
-            ];
-
-            return response()->json($response, Response::HTTP_CREATED);
-
-        } catch (QueryException $e) {
-            return response()->json([
-                'message' => "Failed" . $e->errorInfo
-            ]);
-        }
+        $contact = Contact::create($data);
+        $response = [
+            'success'      => true,
+            'message'    => 'Data Contact us Created',
+            'data'      => $contact,
+        ];
+        return response()->json($response, Response::HTTP_CREATED);
     }
 
     /**

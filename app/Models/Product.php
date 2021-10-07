@@ -14,4 +14,7 @@ class Product extends Model
     public function category(){
         return $this->belongsTo(Categories::class);
     }
+    public function getImageAttribute($value){
+        return url('storage/'. $value);
+    }
 }
