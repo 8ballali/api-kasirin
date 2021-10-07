@@ -15,9 +15,14 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $transaction = Transaction::all();
+        $transaction = Transaction::when(($request->header('created_at')), function ($query) use ($request)
+        {
+            $query->where('created_at', $request->header('created_at'));
+        })
+        ->get();
+        // $transaction = Transaction::all();
         $response = [
             'success' => true,
             'message' => 'data Transaction',
