@@ -21,7 +21,6 @@ class Product_Seeder extends Seeder
         foreach (range(1, 3) as $value) {
             DB::table('products')->insert([
                'name' => $faker->randomElement(['Skincare', 'Palu', 'Beras']),
-               'store_id'=> rand(1,3),
                'category_id'=> rand(1,3),
                'image' =>$faker->text,
                'price'=>$faker->randomDigit(),

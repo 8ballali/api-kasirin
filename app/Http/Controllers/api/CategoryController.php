@@ -4,19 +4,12 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Categories;
-use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $category = Categories::when(($request->header('store_id')), function ($query) use ($request)
@@ -26,131 +19,71 @@ class CategoryController extends Controller
         ->get();
         $response = [
             'success' => true,
-            'message' => 'data kategori',
+            'message' => 'Data Category',
             'data' => $category
         ];
-        return response()->json($response, 200);
+        return response()->json($response, Response::HTTP_OK);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => ['required'],
-            'store_id' => ['required'],
-
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        try {
-            $category = Categories::create($request->all());
-            $response = [
-                'success' => true,
-                'message' => 'Data Category Created',
-                'data' => $category
-            ];
-
-            return response()->json($response, Response::HTTP_CREATED);
-
-        } catch (QueryException $e) {
-            return response()->json([
-                'message' => "Failed" . $e->errorInfo
-            ]);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $category = Categories::findOrFail($id);
         $response = [
             'success' => true,
-            'message' => "Detail Category",
-            'data' => $category,
+            'message' => 'Detail Category',
+            'data' => $category
         ];
-        return response()->json($category, Response::HTTP_OK);
+        return response()->json($response, Response::HTTP_OK);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function store(Request $request)
     {
-        //
-    }
+        $data = $request->all();
+        $rules = [
+            'name'=> 'required',
+            'store_id'   => 'required',
+        ];
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $category = Categories::findOrFail($id);
-
-        $validator = Validator::make($request->all(), [
-            'name' => ['required'],
-        ]);
+        $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+            return response()->json($validator->errors(), 400);
         }
-
-        try {
-            $category->update($request->all());
-            $response = [
-                'message' => 'Data Category Updated',
-                'data' => $category
-            ];
-
-            return response()->json($response, Response::HTTP_OK);
-
-        } catch (QueryException $e) {
-            return response()->json([
-                'message' => "Failed" . $e->errorInfo
-            ]);
-        }
+        $category = Categories::create($data);
+        $response = [
+            'success'      => true,
+            'message'    => 'Data Category Created',
+            'data'      => $category,
+        ];
+        return response()->json($response, Response::HTTP_CREATED);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function update(Request $request, Categories $category)
+    {
+        $data = $request->all();
+        $rules = [
+            'name'          => 'required',
+            'store_id'      => 'required',
+        ];
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        $category->update($data);
+        $response = [
+            'success'   => true,
+            'message'   => 'Data Category Updated',
+            'data'      => $category,
+        ];
+        return response()->json($response, Response::HTTP_OK);
+    }
+    public function delete($id)
     {
         $category = Categories::findOrFail($id);
 
         try {
             $category->delete();
             $response = [
+                'success' => true,
                 'message' => 'Data Category Deleted'
             ];
 
