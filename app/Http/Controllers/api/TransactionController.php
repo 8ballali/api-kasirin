@@ -17,9 +17,9 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
-        $transaction = Transaction::when(($request->header('created_at')), function ($query) use ($request)
+        $transaction = Transaction::when(($request->header('tanggal')), function ($query) use ($request)
         {
-            $query->whereDate('created_at', $request->header('created_at'));
+            $query->whereDate('created_at', $request->header('tanggal'));
         })
         ->get();
         // $transaction = Transaction::all();

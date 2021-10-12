@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+    ];
     protected $fillable = ['name', 'store_id', 'category_id' , 'image', 'price', 'stock', 'barcode'];
     use HasFactory;
 
