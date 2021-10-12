@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\About;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
@@ -15,13 +16,11 @@ class Aboutus_Seeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
-        foreach (range(1, 3) as $value) {
-            DB::table('abouts')->insert([
-                'content' =>$faker->text(),
-                'title' => $faker->randomElement(['Kasirin1', 'Kasirin2', 'Kasirin3']),
-                'type' =>$faker->randomElement(['pemberitahuan', 'peringatan', 'reward']),
-            ]);
-        }
+        $faker = Faker::create('id_ID');
+        About::create([
+            'content' => 'Ini Adalah Isi Untuk Content About us',
+            'title' => 'About Us',
+            'type' => 'About us',
+        ]);
     }
 }

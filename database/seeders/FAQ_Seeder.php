@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\FAQ;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
@@ -15,12 +16,9 @@ class FAQ_Seeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
-        foreach (range(1, 3) as $value) {
-            DB::table('faq')->insert([
-                'questions' =>$faker->text(),
-                'answer' => $faker->text(),
-            ]);
-        }
+        FAQ::create([
+            'questions' => 'Bagaimana cara menjadi member premium',
+            'answer' => 'Bayar dulu',
+        ]);
     }
 }

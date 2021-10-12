@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use GuzzleHttp\Psr7\UploadedFile as Psr7UploadedFile;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
@@ -47,15 +48,12 @@ class ProductController extends Controller
             'barcode'         => 'required',
         ];
 
-
-        // if ($request->image instanceof UploadedFile) {
-        //     $image = $request->image->store('image', 'public');
-        //     $data['image'] = $image;
-        // }else{
-        //     unset($data['image']);
-        // }
-        $image = $request->image->store('image', 'public');
-        $data['image'] = $image;
+        if ($request->image instanceof UploadedFile) {
+            $image = $request->image->store('image', 'public');
+            $data['image'] = $image;
+        }else{
+            unset($data['image']);
+        }
 
 
         $validator = Validator::make($data, $rules);

@@ -19,7 +19,7 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::when(($request->header('created_at')), function ($query) use ($request)
         {
-            $query->where('created_at', $request->header('created_at'));
+            $query->whereDate('created_at', $request->header('created_at'));
         })
         ->get();
         // $transaction = Transaction::all();
