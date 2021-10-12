@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -45,8 +46,18 @@ class ProductController extends Controller
             'stock'         => 'required',
             'barcode'         => 'required',
         ];
+
+
+        // if ($request->image instanceof UploadedFile) {
+        //     $image = $request->image->store('image', 'public');
+        //     $data['image'] = $image;
+        // }else{
+        //     unset($data['image']);
+        // }
         $image = $request->image->store('image', 'public');
         $data['image'] = $image;
+
+
         $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -65,17 +76,19 @@ class ProductController extends Controller
         $data = $request->all();
         $rules = [
             'name'          => 'required',
-            'image'         => 'required',
+
             'category_id'   => 'required',
             'price'         => 'required',
             'stock'         => 'required',
             'barcode'       => 'required',
         ];
 
-        $image = $request->image->store('image', 'public');
-        $image_name = $request->image->getClientOriginalName();
-        $data['image'] = $image;
-
+        if ($request->image instanceof UploadedFile) {
+            $image = $request->image->store('image', 'public');
+            $data['image'] = $image;
+        }else{
+            unset($data['image']);
+        }
         $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);

@@ -5,6 +5,7 @@ use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\CategoryController;
 use App\Http\Controllers\api\ContactController;
 use App\Http\Controllers\api\ContactUsController;
+use App\Http\Controllers\api\EditProfileController;
 use App\Http\Controllers\api\FaqController;
 use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\api\PrivacyPolicyController;
@@ -54,6 +55,7 @@ Route::middleware(['api_key', 'auth_token'])->group(function () {
     Route::post('contact/store', [ContactController::class, 'store']);
     Route::post('contact/edit/{contact}', [ContactController::class, 'update']);
     Route::delete('contact/delete/{contact}', [ContactController::class, 'delete']);
+    Route::post('user/edit/{user}', [EditProfileController::class, 'update']);
     Route::resource('/stores', StoreController::class)->except(['create', 'edit']);
     Route::resource('/privacy', PrivacyPolicyController::class)->except(['create', 'edit']);
     Route::resource('/transaction', TransactionController::class)->except(['create', 'edit']);
