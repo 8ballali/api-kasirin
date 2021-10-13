@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(Contact_Seeder::class);
         $this->call(FAQ_Seeder::class);
         $this->call(PrivacyPolicy_Seeder::class);
+        $this->call(Roles_Seeder::class);
 
     }
 }

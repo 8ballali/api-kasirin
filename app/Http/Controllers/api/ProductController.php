@@ -54,8 +54,6 @@ class ProductController extends Controller
         }else{
             unset($data['image']);
         }
-
-
         $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);

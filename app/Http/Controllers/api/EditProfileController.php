@@ -16,7 +16,6 @@ class EditProfileController extends Controller
         $data = $request->all();
         $rules = [
             'name'          => 'required',
-            'avatar'         =>'required',
             'address'       => 'required',
             'gender'        => 'required',
             'phone'         => 'required',
@@ -28,6 +27,7 @@ class EditProfileController extends Controller
         }else{
             unset($data['avatar']);
         }
+
         $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -41,8 +41,15 @@ class EditProfileController extends Controller
         return response()->json($response, Response::HTTP_OK);
     }
 
-    public function show(Request $request, User $user)
+    public function show($id)
     {
+        $user = User::findOrFail($id);
+        $response = [
+            'success' => true,
+            'message'=> 'Detail User',
+            'data' => $user,
+        ];
+        return response()->json($response, Response::HTTP_OK);
 
     }
 }
