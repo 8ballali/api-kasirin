@@ -10,4 +10,6 @@ class Transaction extends Model
 
     protected $fillable = ['price', 'pay', 'discount', 'change'];
     use HasFactory;
+
+
 }

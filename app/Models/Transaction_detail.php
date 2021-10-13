@@ -10,4 +10,10 @@ class Transaction_detail extends Model
     use HasFactory;
     protected $table = "transaction_details";
     protected $fillable = ['product_id', 'qty', 'transaction_id',];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
 }

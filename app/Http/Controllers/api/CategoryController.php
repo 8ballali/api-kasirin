@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $category = Categories::when(($request->header('store_id')), function ($query) use ($request)
+        $categories = Categories::with('product')->when(($request->header('store_id')), function ($query) use ($request)
         {
             $query->where('store_id', $request->header('store_id'));
         })
@@ -20,7 +20,7 @@ class CategoryController extends Controller
         $response = [
             'success' => true,
             'message' => 'Data Category',
-            'data' => $category
+            'data' => $categories
         ];
         return response()->json($response, Response::HTTP_OK);
     }

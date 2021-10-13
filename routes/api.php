@@ -55,6 +55,7 @@ Route::middleware(['api_key', 'auth_token'])->group(function () {
     Route::post('contact/store', [ContactController::class, 'store']);
     Route::post('contact/edit/{contact}', [ContactController::class, 'update']);
     Route::delete('contact/delete/{contact}', [ContactController::class, 'delete']);
+    Route::post('user/{faq}', [EditProfileController::class, 'show']);
     Route::post('user/edit/{user}', [EditProfileController::class, 'update']);
     Route::resource('/stores', StoreController::class)->except(['create', 'edit']);
     Route::resource('/privacy', PrivacyPolicyController::class)->except(['create', 'edit']);

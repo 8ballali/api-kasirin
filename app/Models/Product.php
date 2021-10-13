@@ -17,7 +17,13 @@ class Product extends Model
     public function category(){
         return $this->belongsTo(Categories::class);
     }
+
     public function getImageAttribute($value){
         return url('storage/'. $value);
     }
+
+    public function transaction_detail(){
+        return $this->hasOne(Transaction_detail::class);
+    }
+
 }

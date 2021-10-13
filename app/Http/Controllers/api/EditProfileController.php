@@ -28,8 +28,6 @@ class EditProfileController extends Controller
         }else{
             unset($data['avatar']);
         }
-
-
         $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -41,5 +39,10 @@ class EditProfileController extends Controller
             'data'      => $user,
         ];
         return response()->json($response, Response::HTTP_OK);
+    }
+
+    public function show(Request $request, User $user)
+    {
+
     }
 }

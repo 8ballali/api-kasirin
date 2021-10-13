@@ -17,7 +17,7 @@ class TransactionDetailController extends Controller
      */
     public function index(Request $request)
     {
-        $detail_transaction = Transaction_detail::when(($request->header('transaction_id')), function ($query) use ($request)
+        $detail_transaction = Transaction_detail::with('product')->when(($request->header('transaction_id')), function ($query) use ($request)
         {
             $query->where('transaction_id', $request->header('transaction_id'));
         })
