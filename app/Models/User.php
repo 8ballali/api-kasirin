@@ -44,4 +44,9 @@ class User extends Authenticatable
     public function getAvatarAttribute($value){
         return url('storage/'. $value);
     }
+
+    public function user_role()
+    {
+        return $this->hasOne(User_Role::class,'user_id', 'id');
+    }
 }

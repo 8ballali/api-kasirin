@@ -14,6 +14,7 @@ use App\Http\Controllers\api\RoleController;
 use App\Http\Controllers\api\StoreController;
 use App\Http\Controllers\api\TransactionController;
 use App\Http\Controllers\api\TransactionDetailController;
+use App\Http\Controllers\api\UserRoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -59,6 +60,11 @@ Route::middleware(['api_key', 'auth_token'])->group(function () {
     Route::get('role', [RoleController::class, 'index']);
     Route::get('role/{id}', [RoleController::class, 'show']);
     Route::post('role/edit/{role}', [RoleController::class, 'update']);
+    Route::get('user-role', [UserRoleController::class, 'index']);
+    Route::get('user-role/{id}', [UserRoleController::class, 'show']);
+    Route::post('user-role/store', [UserRoleController::class, 'store']);
+    Route::post('user-role/edit/{user_role}', [UserRoleController::class, 'update']);
+    Route::delete('user-role/delete/{user_role}', [UserRoleController::class, 'delete']);
     Route::get('user/{id}', [EditProfileController::class, 'show']);
     Route::post('user/edit/{user}', [EditProfileController::class, 'update']);
     Route::resource('/stores', StoreController::class)->except(['create', 'edit']);
