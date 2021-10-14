@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
 {
@@ -54,5 +55,16 @@ class AdminController extends Controller
                 'data' => ''
             ]);
         }
+    }
+
+    public function index()
+    {
+        $admin = Admin::all();
+        $response = [
+            'success' => true,
+            'message' => 'List data Admin',
+            'data' => $admin
+        ];
+        return response()->json($response, Response::HTTP_OK);
     }
 }
