@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
@@ -64,6 +65,25 @@ class AdminController extends Controller
             'success' => true,
             'message' => 'List data Admin',
             'data' => $admin
+        ];
+        return response()->json($response, Response::HTTP_OK);
+    }
+    public function update(Request $request, Admin   $admin)
+    {
+        $data = $request->all();
+        $rules = [
+            'name'    => 'required',
+        ];
+
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        $admin->update($data);
+        $response = [
+            'success'   => true,
+            'message'   => 'Data Admin Updated',
+            'data'      => $admin,
         ];
         return response()->json($response, Response::HTTP_OK);
     }

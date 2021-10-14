@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(User_Role::class,'user_id', 'id');
     }
+
+    public function user_store()
+    {
+        return $this->hasOne(User_Store::class,'store_id', 'id');
+    }
 }

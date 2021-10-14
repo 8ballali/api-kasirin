@@ -16,6 +16,7 @@ use App\Http\Controllers\api\StoreController;
 use App\Http\Controllers\api\TransactionController;
 use App\Http\Controllers\api\TransactionDetailController;
 use App\Http\Controllers\api\UserRoleController;
+use App\Http\Controllers\api\UserStoreController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -68,8 +69,15 @@ Route::middleware(['api_key', 'auth_token'])->group(function () {
     Route::post('user-role/store', [UserRoleController::class, 'store']);
     Route::post('user-role/edit/{user_role}', [UserRoleController::class, 'update']);
     Route::delete('user-role/delete/{user_role}', [UserRoleController::class, 'delete']);
+    Route::get('user-stores', [UserStoreController::class, 'index']);
+    Route::get('user-stores/{id}', [UserStoreController::class, 'show']);
+    Route::post('user-stores/store', [UserStoreController::class, 'store']);
+    Route::post('user-stores/edit/{user_stores}', [UserStoreController::class, 'update']);
+    Route::delete('user-stores/delete/{user_stores}', [UserStoreController::class, 'delete']);
     Route::get('user/{id}', [EditProfileController::class, 'show']);
     Route::post('user/edit/{user}', [EditProfileController::class, 'update']);
+    Route::get('admin/{id}', [AdminController::class, 'show']);
+    Route::post('admin/edit/{admin}', [AdminController::class, 'update']);
     Route::resource('/stores', StoreController::class)->except(['create', 'edit']);
     Route::resource('/privacy', PrivacyPolicyController::class)->except(['create', 'edit']);
     Route::resource('/transaction', TransactionController::class)->except(['create', 'edit']);
