@@ -17,12 +17,8 @@ class CreateTokoTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('address');
-            $table->unsignedBigInteger('user_id');
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('user_id')
-                    ->references('id')->on('users')
-                    ->onDelete('cascade');
         });
     }
 

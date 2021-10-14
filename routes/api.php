@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\api\AboutsController;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\CategoryController;
@@ -30,6 +31,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
+Route::post('login/admin', [AdminController::class, 'login']);
+Route::post('register/admin', [AdminController::class, 'register']);
 Route::middleware(['api_key', 'auth_token'])->group(function () {
 
     Route::get('product', [ProductController::class, 'index']);

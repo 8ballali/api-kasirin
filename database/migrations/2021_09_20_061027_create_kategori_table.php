@@ -20,8 +20,8 @@ class CreateKategoriTable extends Migration
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('store_id')
-                    ->references('id')->on('stores')
-                    ->onDelete('cascade');
+                  ->references('id')->on('stores')
+                  ->onDelete('cascade');
         });
     }
 

@@ -20,7 +20,6 @@ class Stores_Seeder extends Seeder
             DB::table('stores')->insert([
                 'name' =>$faker->company,
                 'address' =>$faker->address,
-                'user_id' => 1,
             ]);
         }
     }
