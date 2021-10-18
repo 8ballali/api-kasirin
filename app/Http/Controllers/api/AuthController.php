@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,23 +17,31 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-
-        $name = $request->input('name');
-        $email = $request->input('email');
-        $address = $request->input('address');
-        $gender = $request->input('gender');
-        $avatar = $request->input('avatar');
-        $phone = $request->input('phone');
-        $password = Hash::make($request->input('password'));
-
+        $data = $request->all();
+        $rules = [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required'],
+        ];
+        if ($request->avatar instanceof UploadedFile) {
+            $avatar = $request->avatar->store('image', 'public');
+            $data['avatar'] = $avatar;
+        }else{
+            unset($data['avatar']);
+        }
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        // dd($data);
         $register = User::create([
-            'name' => $name,
-            'email' => $email,
-            'address' => $address,
-            'gender' => $gender,
+            'name' => $request->name,
+            'email' => $request->email,
+            'address' => $request->address,
+            'gender' => $request->gender,
             'avatar' => $avatar,
-            'phone' => $phone,
-            'password' => $password
+            'phone' => $request->phone,
+            'password' => Hash::make($request->password),
         ]);
 
         if ($register) {
@@ -51,32 +61,6 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // $email = $request->input('email');
-        // $password = $request->input('password');
-
-        // $user = User::where('email', $email)->first();
-
-        // if ($user && Hash::check($password, $user->password)) {
-        //     $token = base64_encode(Str::random(40));
-        //     $fcm_token = base64_encode(Str::random(40));
-
-        //     $user->update([
-        //         'token' => $token,
-        //         'fcm_token' => $fcm_token,
-        //     ]);
-        //     return response()->json([
-        //         'success' => true,
-        //         'message' => 'Login Success!',
-        //         'data'=> $user
-        //     ], 201);
-        // }else {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'email atau password salah',
-        //         'data' => ''
-        //     ]);
-        // }
-
         try {
             $request->validate([
                 'email' => 'required',
@@ -94,7 +78,7 @@ class AuthController extends Controller
             // Jika Hash Tidak sesuai maka Error
             $user = User::where('email', $request->email)->first();
             $user->tokens()->delete();
-            $tokenResult = $user->createToken('token')->plainTextToken;
+            $tokenResult = $user->createToken('authToken')->plainTextToken;
             return response()->json([
                 'success' => true,
                 'message' => 'Authenticated',
@@ -102,9 +86,9 @@ class AuthController extends Controller
                 'token_type' => 'Bearer',
                 'data' => $user
             ]);
-        } catch (Exception $e ) {
+        } catch (Exception $error ) {
             return response()->json([
-                'message' => "Authentication Failed " . $e->errorInfo
+                'message' => "Authentication Failed " . $error->errorInfo
             ]);
         }
     }
