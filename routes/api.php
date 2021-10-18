@@ -13,6 +13,8 @@ use App\Http\Controllers\api\PrivacyPolicyController;
 use App\Http\Controllers\api\ProductController;
 use App\Http\Controllers\api\RoleController;
 use App\Http\Controllers\api\StoreController;
+use App\Http\Controllers\api\SubscriberController;
+use App\Http\Controllers\api\SubscriptionController;
 use App\Http\Controllers\api\TransactionController;
 use App\Http\Controllers\api\TransactionDetailController;
 use App\Http\Controllers\api\UserRoleController;
@@ -34,7 +36,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login/admin', [AdminController::class, 'login']);
 Route::post('register/admin', [AdminController::class, 'register']);
-Route::middleware(['api_key', 'auth_token'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('product', [ProductController::class, 'index']);
     Route::get('product/{id}', [ProductController::class, 'show']);
@@ -78,6 +80,11 @@ Route::middleware(['api_key', 'auth_token'])->group(function () {
     Route::post('user/edit/{user}', [EditProfileController::class, 'update']);
     Route::get('admin/{id}', [AdminController::class, 'show']);
     Route::post('admin/edit/{admin}', [AdminController::class, 'update']);
+    Route::get('subscription', [SubscriptionController::class, 'index']);
+    Route::get('subscriber', [SubscriberController::class, 'index']);
+    Route::get('subscriber/{id}', [SubscriberController::class, 'show']);
+    Route::post('subscriber/store', [SubscriberController::class, 'store']);
+    Route::post('subscriber/edit/{subscriber}', [SubscriberController::class, 'update']);
     Route::resource('/stores', StoreController::class)->except(['create', 'edit']);
     Route::resource('/privacy', PrivacyPolicyController::class)->except(['create', 'edit']);
     Route::resource('/transaction', TransactionController::class)->except(['create', 'edit']);

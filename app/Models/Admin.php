@@ -9,4 +9,9 @@ class Admin extends Model
 {
     use HasFactory;
     protected $fillable = ['email', 'password'];
+
+    public function subscriber()
+    {
+        return $this->hasOne(Subscriber::class,'admin_id','id');
+    }
 }
