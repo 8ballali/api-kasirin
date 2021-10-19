@@ -23,13 +23,21 @@ class AboutsController extends Controller
 
     public function show($id)
     {
-        $abouts = About::findOrFail($id);
-        $response = [
-            'success' => true,
-            'message' => 'Detail About Us',
-            'data' => $abouts
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        $abouts = About::find($id);
+        if ($abouts) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Detail About Us',
+                'data' => $abouts
+            ]);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data About Us Not Found',
+                'data' => []
+            ],404);
+        }
+
     }
 
     public function store(Request $request)

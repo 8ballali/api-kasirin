@@ -24,13 +24,20 @@ class ContactController extends Controller
 
     public function show($id)
     {
-        $contact = Contact::findOrFail($id);
-        $response = [
-            'success' => true,
-            'message' => 'Detail contact Us',
-            'data' => $contact
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        $contact = Contact::find($id);
+        if ($contact) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Detail Contact',
+                'data' => $contact
+            ],200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Contact Not Found'
+                'data' => []
+            ],404);
+        }
     }
 
     public function store(Request $request)

@@ -15,25 +15,42 @@ class CategoryController extends Controller
         $categories = Categories::with('product')->when(($request->header('store_id')), function ($query) use ($request)
         {
             $query->where('store_id', $request->header('store_id'));
+        })->when(($request->get('name')), function ($query) use ($request)
+        {
+            $query->where('name', 'like', '%' . $request->name . '%');
         })
         ->get();
-        $response = [
-            'success' => true,
-            'message' => 'Data Category',
-            'data' => $categories
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        if ($categories->isNotEmpty()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Category',
+                'data' => $categories
+            ],200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category Not Found',
+                'data' => []
+            ],404);
+        }
     }
 
     public function show($id)
     {
-        $category = Categories::findOrFail($id);
-        $response = [
-            'success' => true,
-            'message' => 'Detail Category',
-            'data' => $category
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        $categories = Categories::find($id);
+        if ($categories) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Detail Category',
+                'data' => $categories
+            ],200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category Not Found',
+
+            ],404);
+        }
     }
 
     public function store(Request $request)

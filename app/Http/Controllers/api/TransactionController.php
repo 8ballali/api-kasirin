@@ -21,16 +21,24 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::when(($request->get('tanggal')), function ($query) use ($request)
         {
-            $query->whereDate('created_at', $request->get('tanggal'));
+            $query->whereDate('created_at', 'like', '%' . $request->tanggal . '%' ,);
         })
         ->get();
-        // $transaction = Transaction::all();
-        $response = [
-            'success' => true,
-            'message' => 'data Transaction',
-            'data' => $transaction
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        if ($transaction->isNotEmpty()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Transaction',
+                'code' => 200,
+                'data' => $transaction
+            ]);
+        }else {
+            return response()->json([
+                'success' =>false,
+                'message' => 'Transaction Not Found',
+                'code' => 404,
+                'data' => []
+            ]);
+        }
     }
 
     /**
@@ -93,7 +101,19 @@ class TransactionController extends Controller
      */
     public function show($id)
     {
-        //
+        $transaction = Transaction::find($id);
+        if ($transaction) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Detail Transaction',
+                'data' => $transaction
+            ],200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transaction Not Found',
+            ],404);
+        }
     }
 
     /**

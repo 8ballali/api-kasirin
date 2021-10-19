@@ -22,14 +22,24 @@ class StoreController extends Controller
         $stores = Store::when(($request->header('user_id')), function ($query) use ($request)
         {
             $query->where('user_id', $request->header('user_id'));
+        })->when(($request->get('name')), function ($query) use ($request)
+        {
+            $query->where('name', 'like', '%'. $request->name . '%');
         })
         ->get();
-        $response = [
-            'success' => true,
-            'message' => 'List Toko',
-            'data' => $stores,
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        if ($stores->isNotEmpty) {
+            return response()-> json([
+                'success' => true,
+                'message' => 'Data Stores',
+                'data' => $stores
+            ],200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Store Not Found',
+                'data' => []
+            ],404);
+        }
     }
 
     /**

@@ -16,24 +16,42 @@ class ProductController extends Controller
         $product = Product::when(($request->header('category_id')), function ($query) use ($request)
         {
             $query->where('category_id', $request->header('category_id'));
+        })->when(($request->get('name')), function ($query) use ($request)
+        {
+            $query->where('name', 'like', '%' . $request->name . '%');
+
         })
         ->get();
-        $response = [
-            'success' => true,
-            'message' => "Data Product",
-            'data' => $product
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        if ($product->isNotEmpty()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Product',
+                'data' => $product
+            ],200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product Not Found',
+                'data' => []
+            ],404);
+        }
     }
     public function show($id)
     {
-        $product = Product::findOrFail($id);
-        $response = [
-            'success' => true,
-            'message' => 'Detail Product',
-            'data' => $product
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        $product = Product::find($id);
+        if ($product) {
+            return response()->json([
+                'success' => true,
+                'message' => 'detail product',
+                'data' => $product
+            ],200);
+        }else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Product tidak ditemukan',
+            ],404);
+        }
+
     }
 
     public function store(Request $request)
