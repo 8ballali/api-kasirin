@@ -24,6 +24,7 @@ class AuthController extends Controller
             'gender' => ['required'],
             'password' => ['required'],
         ];
+        $avatar = null;
         if ($request->avatar instanceof UploadedFile) {
             $avatar = $request->avatar->store('image', 'public');
             $data['avatar'] = $avatar;
