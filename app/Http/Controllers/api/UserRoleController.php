@@ -12,7 +12,7 @@ class UserRoleController extends Controller
 {
     public function index(Request $request)
     {
-        $user_role = User_Role::with('user')->with('role')->when(($request->get('user_id')), function ($query) use ($request)
+        $user_role = User_Role::with(['user', 'role'])->when(($request->get('user_id')), function ($query) use ($request)
         {
             $query->where('user_id', $request->get('user_id'));
         })

@@ -21,6 +21,7 @@ class AuthController extends Controller
         $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'gender' => ['required'],
             'password' => ['required'],
         ];
         if ($request->avatar instanceof UploadedFile) {

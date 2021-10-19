@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\Transaction_detail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,28 +51,38 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
-            'price' => ['required'],
-            'discount' => ['required'],
-            'change' => ['required'],
-        ]);
+        $data = $request->all();
+        $rules = [
+            'price'          => 'required',
+            'pay'            => 'required',
+            'discount'       => 'nullable',
+            'change'         => 'required',
+        ];
+
+        $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+            return response()->json($validator->errors(), 400);
         }
 
-        try {
-            $transaction = Transaction::create($request->all());
-            $response = [
-                'success' => true,
-                'message' => 'Data Transaction Created',
-                'data' => $transaction
-            ];
-            return response()->json($response, Response::HTTP_CREATED);
-        } catch (QueryException $e) {
-            return response()->json([
-                'message' => "Failed". $e->errorInfo
-            ]);
+        $transaction = Transaction::create($data);
+
+            foreach ($request->products as $product) {
+                Transaction_detail::create([
+                    'product_id' => $product['product_id'],
+                    'qty' => $product['qty'],
+                    'transaction_id' => $transaction->id,
+                ]);
+
+            Product::find($product['product_id'])->decrement('stock', $product['qty']);
         }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaction Success',
+            'data' => $transaction
+        ]);
+
+        // return ResponseFormatter::success($transaction);
     }
 
     /**
