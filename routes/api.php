@@ -12,6 +12,7 @@ use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\api\PrivacyPolicyController;
 use App\Http\Controllers\api\ProductController;
 use App\Http\Controllers\api\RoleController;
+use App\Http\Controllers\api\Statistic;
 use App\Http\Controllers\api\StoreController;
 use App\Http\Controllers\api\SubscriberController;
 use App\Http\Controllers\api\SubscriptionController;
@@ -89,6 +90,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('/privacy', PrivacyPolicyController::class)->except(['create', 'edit']);
     Route::resource('/transaction', TransactionController::class)->except(['create', 'edit']);
     Route::resource('/detail-transaction', TransactionDetailController::class)->except(['create', 'edit']);
+    Route::get('stats', [Statistic::class, 'index']);
     Route::get('/test', function () {
         return 'oek';
     });

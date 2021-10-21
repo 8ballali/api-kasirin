@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Transaction_detail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -101,6 +102,10 @@ class TransactionController extends Controller
      */
     public function show($id)
     {
+        $label = DB::table('transaction_detail')->selectRaw(DB::raw('count(*) as name'))->groupBy('product_id')->orderBy('product_id', 'asc')->get()->map(function($x) {
+            return $x->name;
+            });
+        dd($label);
         $transaction = Transaction::find($id);
         if ($transaction) {
             return response()->json([
@@ -114,6 +119,7 @@ class TransactionController extends Controller
                 'message' => 'Transaction Not Found',
             ],404);
         }
+
     }
 
     /**
