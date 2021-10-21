@@ -102,10 +102,7 @@ class TransactionController extends Controller
      */
     public function show($id)
     {
-        $label = DB::table('transaction_detail')->selectRaw(DB::raw('count(*) as name'))->groupBy('product_id')->orderBy('product_id', 'asc')->get()->map(function($x) {
-            return $x->name;
-            });
-        dd($label);
+
         $transaction = Transaction::find($id);
         if ($transaction) {
             return response()->json([

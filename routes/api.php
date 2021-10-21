@@ -18,6 +18,7 @@ use App\Http\Controllers\api\SubscriberController;
 use App\Http\Controllers\api\SubscriptionController;
 use App\Http\Controllers\api\TransactionController;
 use App\Http\Controllers\api\TransactionDetailController;
+use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\UserRoleController;
 use App\Http\Controllers\api\UserStoreController;
 use Illuminate\Http\Request;
@@ -37,6 +38,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login/admin', [AdminController::class, 'login']);
 Route::post('register/admin', [AdminController::class, 'register']);
+Route::get('users', [UserController::class, 'index']);
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('product', [ProductController::class, 'index']);
