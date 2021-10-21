@@ -17,20 +17,6 @@ class User_Seeder extends Seeder
     public function run()
     {
         $faker = Faker::create('id_ID');
-        // foreach (range(1, 6) as $value) {
-        //     DB::table('users')->insert([
-        //        'name' => $faker->name,
-        //        'email' => $faker->email,
-        //        'token' => $faker->regexify('[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}'),
-        //        'fcm_token' =>$faker->regexify('[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}'),
-        //        'address' =>$faker->address,
-        //        'gender' =>$faker->randomElement(['Male', 'Female']),
-        //        'avatar'=>'',
-        //        'phone' => $faker->e164PhoneNumber,
-        //        'password' => Hash::make('12345678'),
-        //     ]);
-        // }
-
         User::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
