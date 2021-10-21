@@ -34,7 +34,6 @@ class User_Seeder extends Seeder
         User::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
-            'token' => $faker->regexify('[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}'),
             'fcm_token' => $faker->regexify('[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}'),
             'address' => $faker->address,
             'gender' =>$faker->randomElement(['Male', 'Female']),
