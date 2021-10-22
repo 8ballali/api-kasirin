@@ -26,6 +26,7 @@ class Product_Seeder extends Seeder
                'price'=>$faker->randomDigit(),
                'stock'=> $faker->randomDigit(),
                'barcode'=>$faker->randomDigit(),
+               'store_id'=> rand(1,3),
             ]);
         }
     }

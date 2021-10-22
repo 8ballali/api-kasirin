@@ -14,4 +14,13 @@ class Store extends Model
     {
         return $this->hasMany(User_Store::class,'store_id', 'id');
     }
+    public function product()
+    {
+        return $this->hasOne(Product::class,'store_id', 'id');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class,'store_id', 'id');
+    }
 }

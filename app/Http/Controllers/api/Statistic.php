@@ -12,10 +12,11 @@ class Statistic extends Controller
 {
     public function index(Request $request)
     {
-        $product = Transaction_detail::join('products', 'products.id', 'product_id')->groupBy('transaction_details.product_id')->selectRaw('count(*) as Dibeli, products.name')->orderByRaw('Dibeli desc')
+        $product = Transaction_detail::join('products', 'products.id', 'product_id')->groupBy('transaction_details.product_id')
+        ->selectRaw('count(*) as Dibeli, products.name')->orderByRaw('Dibeli desc')
         ->when(($request->get('tanggal')), function ($query) use ($request)
         {
-            $query->whereDate('created_at', 'like', '%' . $request->tanggal . '%' ,);
+            $query->whereDate('transaction_details.created_at', 'like', '%' . $request->tanggal . '%' ,);
         })
         ->get();
         if ($product->isNotEmpty()) {

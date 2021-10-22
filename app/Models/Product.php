@@ -11,7 +11,7 @@ class Product extends Model
     protected $casts = [
         'created_at' => 'datetime:Y-m-d',
     ];
-    protected $fillable = ['name', 'store_id', 'category_id' , 'image', 'price', 'stock', 'barcode'];
+    protected $fillable = ['name', 'store_id', 'category_id' , 'image', 'price', 'stock', 'barcode', 'store_id'];
     use HasFactory;
 
     public function category(){
@@ -26,4 +26,8 @@ class Product extends Model
         return $this->hasOne(Transaction_detail::class);
     }
 
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ProductController extends Controller
 {
     public function index(Request $request){
-        $product = Product::when(($request->header('category_id')), function ($query) use ($request)
+        $product = Product::with('store')->when(($request->header('category_id')), function ($query) use ($request)
         {
             $query->where('category_id', $request->header('category_id'));
         })->when(($request->get('name')), function ($query) use ($request)

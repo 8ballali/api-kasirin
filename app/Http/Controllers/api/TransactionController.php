@@ -22,7 +22,7 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::when(($request->get('tanggal')), function ($query) use ($request)
         {
-            $query->whereDate('created_at', 'like', '%' . $request->tanggal . '%' ,);
+            $query->whereDate('transaction_details.created_at', 'like', '%' . $request->tanggal . '%' ,);
         })
         ->get();
         if ($transaction->isNotEmpty()) {

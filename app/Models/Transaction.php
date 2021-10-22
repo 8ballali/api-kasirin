@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
 
-    protected $fillable = ['price', 'pay', 'discount', 'change'];
+    protected $fillable = ['price', 'pay', 'discount', 'change', 'store_id'];
     use HasFactory;
+
+    public function stores()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }
