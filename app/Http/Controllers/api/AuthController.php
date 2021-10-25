@@ -74,7 +74,7 @@ class AuthController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Wrong Email or Password',
-                ],500);
+                ],400);
             }
 
             // Jika Hash Tidak sesuai maka Error

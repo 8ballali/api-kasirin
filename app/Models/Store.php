@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Store extends Model
 {
 
-    protected $fillable = ['name', 'address', 'user_id',];
+    protected $fillable = ['name', 'address',];
     use HasFactory;
+
     public function user_store()
     {
         return $this->hasMany(User_Store::class,'store_id', 'id');
@@ -23,4 +24,6 @@ class Store extends Model
     {
         return $this->hasMany(Transaction::class,'store_id', 'id');
     }
+
+
 }

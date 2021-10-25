@@ -34,7 +34,7 @@ class UserStoreController extends Controller
         $data = $request->all();
         $rules = [
             'user_id'          => 'required',
-            'store_id'          => 'required',
+            'store_id'         => 'required',
         ];
 
         $validator = Validator::make($data, $rules);
