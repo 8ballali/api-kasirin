@@ -18,8 +18,11 @@ class Product extends Model
         return $this->belongsTo(Categories::class);
     }
 
-    public function getImageAttribute($value){
-        return url('storage/'. $value);
+    protected $appends = [
+        'image_url',
+    ];
+    public function getImageUrlAttribute(){
+        return url('storage/'. $this->image);
     }
 
     public function transaction_detail(){

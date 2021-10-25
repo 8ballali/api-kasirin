@@ -5,8 +5,8 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Testing\File;
+use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,10 +24,15 @@ class EditProfileController extends Controller
         $this->validate($request, [
         ]);
         $user = User::find($id);
-        if ($request->avatar instanceof UploadedFile) {
-            $avatar = $request->avatar->store('image', 'public');
+        if (request()->hasFile('avatar') && request('avatar') != '') {
+            $imagePath = storage_path('app/public/'.$user->avatar);
+            // dd($imagePath);
+            if(FacadesFile::exists($imagePath)){
+                unlink($imagePath);
+            }
+            $avatar = request()->file('avatar')->store('image', 'public');
             $data['avatar'] = $avatar;
-            Storage::delete($data['avatar']);
+            $user->update($data);
         }else{
             unset($data['avatar']);
         }

@@ -4,11 +4,11 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use GuzzleHttp\Psr7\UploadedFile as Psr7UploadedFile;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\File as FacadesFile;
 
 class ProductController extends Controller
 {
@@ -83,19 +83,31 @@ class ProductController extends Controller
         ];
         return response()->json($response, Response::HTTP_CREATED);
     }
-
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
         $data = $request->all();
         $rules = [
             'name'          => 'required',
-
             'category_id'   => 'required',
             'price'         => 'required',
             'stock'         => 'required',
             'barcode'       => 'required',
         ];
-
+        $this->validate($request, [
+        ]);
+        $product = Product::find($id);
+        if (request()->hasFile('image') && request('image') != '') {
+            $imagePath = storage_path('app/public/'.$product->image);
+            // dd($imagePath);
+            if(FacadesFile::exists($imagePath)){
+                unlink($imagePath);
+            }
+            $image = request()->file('image')->store('image', 'public');
+            $data['image'] = $image;
+            $product->update($data);
+        }else{
+            unset($data['image']);
+        }
         if ($request->image instanceof UploadedFile) {
             $image = $request->image->store('image', 'public');
             $data['image'] = $image;
