@@ -64,7 +64,7 @@ class ProductController extends Controller
             'stock'         => 'required',
             'barcode'         => 'required',
         ];
-
+        $image = null;
         if ($request->image instanceof UploadedFile) {
             $image = $request->image->store('image', 'public');
             $data['image'] = $image;
@@ -96,21 +96,21 @@ class ProductController extends Controller
         $this->validate($request, [
         ]);
         $product = Product::find($id);
+        if (!$product) {
+            return response()->json([
+                'message' => 'Product Not Found'
+            ]);
+        }
+        // $image = null;
         if (request()->hasFile('image') && request('image') != '') {
+            // dd($product);
             $imagePath = storage_path('app/public/'.$product->image);
-            // dd($imagePath);
             if(FacadesFile::exists($imagePath)){
                 unlink($imagePath);
             }
             $image = request()->file('image')->store('image', 'public');
             $data['image'] = $image;
             $product->update($data);
-        }else{
-            unset($data['image']);
-        }
-        if ($request->image instanceof UploadedFile) {
-            $image = $request->image->store('image', 'public');
-            $data['image'] = $image;
         }else{
             unset($data['image']);
         }

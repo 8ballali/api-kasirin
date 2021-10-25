@@ -34,7 +34,7 @@ class ContactController extends Controller
         }else {
             return response()->json([
                 'success' => false,
-                'message' => 'Data Contact Not Found'
+                'message' => 'Data Contact Not Found',
                 'data' => []
             ],404);
         }

@@ -126,7 +126,6 @@ class StoreController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required'],
             'address' => ['required'],
-            'user_id' => ['required'],
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);

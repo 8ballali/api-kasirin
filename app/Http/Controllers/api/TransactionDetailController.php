@@ -20,6 +20,9 @@ class TransactionDetailController extends Controller
         $detail_transaction = Transaction_detail::with('product')->when(($request->header('transaction_id')), function ($query) use ($request)
         {
             $query->where('transaction_id', $request->header('transaction_id'));
+        })->when(($request->get('tanggal')), function ($query) use ($request)
+        {
+            $query->whereDate('Transaction_details.created_at', 'like', '%' . $request->tanggal . '%' ,);
         })
         ->get();
         $response = [
