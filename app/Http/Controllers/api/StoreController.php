@@ -27,7 +27,7 @@ class StoreController extends Controller
             $query->where('name', 'like', '%'. $request->name . '%');
         })
         ->get();
-        if ($stores->isNotEmpty) {
+        if ($stores->isNotEmpty()) {
             return response()-> json([
                 'success' => true,
                 'message' => 'Data Stores',
