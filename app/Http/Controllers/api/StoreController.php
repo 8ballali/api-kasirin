@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Store;
+use App\Models\User_Store;
 use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -60,28 +61,25 @@ class StoreController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
-            'name' => ['required'],
-            'address' => ['required'],
-            'user_id' => ['required'],
-        ]);
+        $data = $request->all();
+        $rules = [
+            'name'          => 'required',
+            'address'            => 'required',
+        ];
+        $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
-        try {
-            $stores = Store::create($request->all());
-            $response = [
-                'success' => true,
-                'message' => 'Data Stores Created',
-                'data' => $stores
-            ];
-            return response()->json($response, Response::HTTP_CREATED);
-        } catch (QueryException $e) {
-            return response()->json([
-                'message' => "Failed". $e->errorInfo
-            ]);
-        }
+        $store = Store::create($data);
+        $user_store = User_Store::create([
+                    'user_id' => $request['user_id'],
+                    'store_id' => $store->id,
+                ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'store has Been Created',
+            'data' => [$store,$user_store]
+        ]);
     }
 
     /**
