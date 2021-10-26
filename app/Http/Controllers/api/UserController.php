@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::all();
+        $user = User::with('user_store')->get();
         return response()->json([
             'success' => true,
             'message' => 'List User',

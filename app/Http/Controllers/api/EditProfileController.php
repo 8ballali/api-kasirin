@@ -57,7 +57,7 @@ class EditProfileController extends Controller
 
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('user_store')->findOrFail($id);
         $response = [
             'success' => true,
             'message'=> 'Detail User',

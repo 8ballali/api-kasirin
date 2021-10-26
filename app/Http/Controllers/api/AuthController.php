@@ -77,7 +77,6 @@ class AuthController extends Controller
                     'message' => 'Wrong Email or Password',
                 ],200);
             }
-
             // Jika Hash Tidak sesuai maka Error
             $user = User::where('email', $request->email)->with('user_store')->first();
             $user->tokens()->delete();

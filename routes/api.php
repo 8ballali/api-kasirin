@@ -40,9 +40,9 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login/admin', [AdminController::class, 'login']);
 Route::post('register/admin', [AdminController::class, 'register']);
-Route::get('users', [UserController::class, 'index']);
 Route::middleware(['auth:sanctum'])->group(function () {
 
+    Route::get('users', [UserController::class, 'index']);
     Route::get('product', [ProductController::class, 'index']);
     Route::get('product/{id}', [ProductController::class, 'show']);
     Route::post('product/store', [ProductController::class, 'store']);
