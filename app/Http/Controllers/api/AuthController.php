@@ -79,7 +79,7 @@ class AuthController extends Controller
             }
 
             // Jika Hash Tidak sesuai maka Error
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->with('user_store')->first();
             $user->tokens()->delete();
             $tokenResult = $user->createToken('authToken')->plainTextToken;
 
