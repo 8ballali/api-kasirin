@@ -36,7 +36,7 @@ class StatistikCategory extends Controller
                 'success' => false,
                 'Message' => 'Statistic Not Found',
                 'data' => []
-            ],404);
+            ],200);
         }
 
     }

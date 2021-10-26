@@ -36,7 +36,7 @@ class Statistic extends Controller
                 'success' => false,
                 'message' => 'Statistik not Found',
                 'data' => []
-            ],404);
+            ],200);
         }
     }
 }

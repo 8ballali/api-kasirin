@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Testing\File;
 use Illuminate\Support\Facades\File as FacadesFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,13 +25,17 @@ class EditProfileController extends Controller
         $this->validate($request, [
         ]);
         $user = User::find($id);
-        if (request()->hasFile('avatar') && request('avatar') != '') {
-            $imagePath = storage_path('app/public/'.$user->avatar);
-            // dd($imagePath);
-            if(FacadesFile::exists($imagePath)){
-                unlink($imagePath);
-            }
+        if (!$user) {
+            return response()->json([
+                'message' => 'User Not Found'
+            ]);
+        }
+        if (request()->hasFile('avatar')) {
             $avatar = request()->file('avatar')->store('image', 'public');
+            if (Storage::disk('public')->exists($user->avatar)) {
+                Storage::disk('public')->delete([$user->avatar]);
+            }
+            $image = request()->file('avatar')->store('image', 'public');
             $data['avatar'] = $avatar;
             $user->update($data);
         }else{

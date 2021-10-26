@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\File as FacadesFile;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -73,7 +73,6 @@ class ProductController extends Controller
             'stock'         => 'required',
             'barcode'         => 'required',
         ];
-        $image = null;
         if ($request->image instanceof UploadedFile) {
             $image = $request->image->store('image', 'public');
             $data['image'] = $image;
@@ -110,12 +109,10 @@ class ProductController extends Controller
                 'message' => 'Product Not Found'
             ]);
         }
-        // $image = null;
-        if (request()->hasFile('image') && request('image') != '') {
-            // dd($product);
-            $imagePath = storage_path('app/public/'.$product->image);
-            if(FacadesFile::exists($imagePath)){
-                unlink($imagePath);
+        if (request()->hasFile('image')) {
+            $image = request()->file('image')->store('image', 'public');
+            if (Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete([$product->image]);
             }
             $image = request()->file('image')->store('image', 'public');
             $data['image'] = $image;
