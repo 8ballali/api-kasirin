@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\User_Store;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -81,6 +82,7 @@ class AuthController extends Controller
             $user = User::where('email', $request->email)->first();
             $user->tokens()->delete();
             $tokenResult = $user->createToken('authToken')->plainTextToken;
+
             return response()->json([
                 'success' => true,
                 'message' => 'Authenticated',
@@ -90,7 +92,7 @@ class AuthController extends Controller
             ]);
         } catch (Exception $error ) {
             return response()->json([
-                'message' => "Authentication Failed " . $error->errorInfo
+                'message' => "Authentication Failed " . $error
             ]);
         }
     }

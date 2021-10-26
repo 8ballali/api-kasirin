@@ -41,9 +41,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
     protected $appends = [
         'avatar_url',
+        'store_id',
     ];
+
+
+
     public function getAvatarUrlAttribute(){
         return url('storage/'. $this->avatar);
     }
@@ -55,10 +60,15 @@ class User extends Authenticatable
 
     public function user_store()
     {
-        return $this->hasOne(User_Store::class,'store_id', 'id');
+        return $this->hasOne(User_Store::class,'user_id', 'id');
     }
     public function subscriber()
     {
         return $this->hasOne(Subscriber::class,'user_id', 'id');
+    }
+
+    public function getStoreIdAttribute()
+    {
+        return $this->user_store->id;
     }
 }
