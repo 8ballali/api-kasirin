@@ -77,7 +77,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('user-role/delete/{user_role}', [UserRoleController::class, 'delete']);
     Route::get('user-stores', [UserStoreController::class, 'index']);
     Route::get('user-stores/{id}', [UserStoreController::class, 'show']);
-    Route::post('user-stores/store', [UserStoreController::class, 'store']);
     Route::post('user-stores/edit/{user_stores}', [UserStoreController::class, 'update']);
     Route::delete('user-stores/delete/{user_stores}', [UserStoreController::class, 'delete']);
     Route::get('user/{id}', [EditProfileController::class, 'show']);
@@ -103,6 +102,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+

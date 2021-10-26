@@ -31,23 +31,7 @@ class UserStoreController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();
-        $rules = [
-            'user_id'          => 'required',
-            'store_id'         => 'required',
-        ];
 
-        $validator = Validator::make($data, $rules);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-        $user_store = User_Store::create($data);
-        $response = [
-            'success'      => true,
-            'message'    => 'Data User Store Created',
-            'data'      => $user_store,
-        ];
-        return response()->json($response, Response::HTTP_CREATED);
     }
     public function update(Request $request, User_Store  $user_stores)
     {

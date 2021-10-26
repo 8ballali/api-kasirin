@@ -13,10 +13,19 @@ use Illuminate\Support\Facades\File as FacadesFile;
 class ProductController extends Controller
 {
     public function index(Request $request){
-        $product = Product::with('store')->when(($request->header('category_id')), function ($query) use ($request)
+        $product = Product::with('category.store')
+        ->when(($request->get('category_id')), function ($query) use ($request)
         {
-            $query->where('category_id', $request->header('category_id'));
-        })->when(($request->get('name')), function ($query) use ($request)
+            $query->where('category_id', $request->category_id);
+        })
+        ->when(($request->get('store_id')), function ($query) use ($request)
+        {
+            $query->whereHas('category', function ($query) use ($request)
+            {
+                $query->where('store_id', $request->store_id);
+            });
+        })
+        ->when(($request->get('name')), function ($query) use ($request)
         {
             $query->where('name', 'like', '%' . $request->name . '%');
 

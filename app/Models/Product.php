@@ -20,17 +20,17 @@ class Product extends Model
 
     protected $appends = [
         'image_url',
+        'store'
     ];
     public function getImageUrlAttribute(){
         return url('storage/'. $this->image);
     }
 
-    public function transaction_detail(){
-        return $this->hasOne(Transaction_detail::class);
+    public function getStoreAttribute(){
+        return $this->category()->first()->store()->first();
     }
 
-    public function store()
-    {
-        return $this->belongsTo(Store::class);
+    public function transaction_detail(){
+        return $this->hasOne(Transaction_detail::class);
     }
 }
