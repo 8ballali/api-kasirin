@@ -12,13 +12,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Categories::with('product')->when(($request->header('store_id')), function ($query) use ($request)
-        {
-            $query->where('store_id', $request->header('store_id'));
-        })->when(($request->get('name')), function ($query) use ($request)
-        {
-            $query->where('name', 'like', '%' . $request->name . '%');
-        })
+        $categories = Categories::with('product')->where('store_id', $request->store_id)
         ->get();
         if ($categories->isNotEmpty()) {
             return response()->json([
