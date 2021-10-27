@@ -44,7 +44,7 @@ class User extends Authenticatable
 
     protected $appends = [
         'avatar_url',
-        'store'
+        // 'store'
     ];
 
 
@@ -67,10 +67,10 @@ class User extends Authenticatable
         return $this->hasOne(Subscriber::class,'user_id', 'id');
     }
 
-    public function getStoreAttribute()
-    {
-        return $this->user_store()->first()->store()->first();
-    }
+    // public function getStoreAttribute()
+    // {
+    //     return $this->user_store()->first()->store()->first();
+    // }
 
 
 }
