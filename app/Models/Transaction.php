@@ -11,8 +11,10 @@ class Transaction extends Model
     protected $fillable = ['price', 'pay', 'discount', 'change', 'store_id'];
     use HasFactory;
 
-    public function stores()
+
+    public function store()
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Store::class,'store_id');
     }
+
 }

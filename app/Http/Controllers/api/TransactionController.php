@@ -20,13 +20,10 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
-        $transaction = Transaction::when(($request->get('tanggal')), function ($query) use ($request)
+        $transaction = Transaction::with('store')->where('store_id', $request->store_id)
+        ->when(($request->get('tanggal')), function ($query) use ($request)
         {
             $query->whereDate('transactions.created_at', 'like', '%' . $request->tanggal . '%' ,);
-        })
-        ->when(($request->get('store_id')), function ($query) use ($request)
-        {
-            $query->where('transactions.store_id', 'like', '%' . $request->store_id . '%' ,);
         })
         ->get();
         if ($transaction->isNotEmpty()) {
