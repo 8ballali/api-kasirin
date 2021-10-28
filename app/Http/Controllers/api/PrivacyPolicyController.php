@@ -77,13 +77,21 @@ class PrivacyPolicyController extends Controller
      */
     public function show($id)
     {
-        $privacy = Privacy_Policy::findOrFail($id);
-        $response = [
-            'success' => true,
-            'message' => 'Detail Privacy and Policy',
-            'data' => $privacy
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        $privacy = Privacy_Policy::find($id);
+        if ($privacy) {
+            return response()->json([
+                'success' => true,
+                'message' => "Data Privacy and Policy",
+                'data' => $privacy
+            ],200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Not Found',
+                'data'    => $privacy
+            ],404);
+        }
+
     }
 
     /**

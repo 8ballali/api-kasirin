@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\User_Store;
 use Exception;
@@ -46,7 +47,7 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
         ]);
-
+        $register->roles()->attach(Role::where('name', 'user')->first());
         if ($register) {
             return response()->json([
                 'success' =>true,
@@ -78,7 +79,7 @@ class AuthController extends Controller
                 ],200);
             }
             // Jika Hash Tidak sesuai maka Error
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->with('user_store.store')->first();
             $user->tokens()->delete();
             $tokenResult = $user->createToken('authToken')->plainTextToken;
 
@@ -95,4 +96,11 @@ class AuthController extends Controller
             ]);
         }
     }
+
+    // public function logout()
+    // {
+    //     if (Auth::check()) {
+    //         Auth::
+    //     }
+    // }
 }

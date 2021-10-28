@@ -24,12 +24,19 @@ class FaqController extends Controller
     public function show($id)
     {
         $faq = FAQ::findOrFail($id);
-        $response = [
-            'success' => true,
-            'message' => 'Detail FAQ',
-            'data' => $faq
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        if ($faq) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Detail FAQ',
+                'data' => $faq
+            ],200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Not Found',
+                'data' => []
+            ],404);;
+        }
     }
 
     public function store(Request $request)

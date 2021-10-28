@@ -23,13 +23,20 @@ class RoleController extends Controller
 
     public function show($id)
     {
-        $roles = Role::findOrFail($id);
-        $response = [
-            'success' => true,
-            'message' => 'Detail Role',
-            'data' => $roles
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        $roles = Role::find($id);
+        if ($roles) {
+            return response()->json([
+                'success' => true,
+                'message' => "Data Role",
+                'data'    => $roles
+            ],200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => "Data Not Found",
+                'data' => []
+            ],404);
+        }
     }
 
     public function update(Request $request, Role $role)

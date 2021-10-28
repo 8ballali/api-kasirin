@@ -53,6 +53,11 @@ class User extends Authenticatable
         return url('storage/'. $this->avatar);
     }
 
+    // public function getStoreAttribute()
+    // {
+    //     return $this->user_store()->first();
+    // }
+
     public function user_role()
     {
         return $this->hasOne(User_Role::class,'user_id', 'id');
@@ -67,10 +72,10 @@ class User extends Authenticatable
         return $this->hasOne(Subscriber::class,'user_id', 'id');
     }
 
-    // public function getStoreAttribute()
-    // {
-    //     return $this->user_store()->first()->store()->first();
-    // }
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_users');
+    }
 
 
 }
