@@ -57,13 +57,20 @@ class EditProfileController extends Controller
 
     public function show($id)
     {
-        $user = User::with('user_store')->findOrFail($id);
-        $response = [
-            'success' => true,
-            'message'=> 'Detail User',
-            'data' => $user,
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        $user = User::with('user_store.store')->findOrFail($id);
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Detail User',
+                'data' => $user
+            ],200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'User Not Found',
+                'data' => []
+            ],404);
+        }
 
     }
 }
