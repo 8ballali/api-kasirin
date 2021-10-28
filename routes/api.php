@@ -42,6 +42,7 @@ Route::post('login/admin', [AdminController::class, 'login']);
 Route::post('register/admin', [AdminController::class, 'register']);
 Route::middleware(['auth:sanctum'])->group(function () {
 
+    Route::get('logout', [AuthController::class, 'logout']);
     Route::get('users', [UserController::class, 'index']);
     Route::get('product', [ProductController::class, 'index']);
     Route::get('product/{id}', [ProductController::class, 'show']);

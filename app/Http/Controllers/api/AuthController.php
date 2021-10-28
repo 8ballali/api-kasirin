@@ -97,10 +97,14 @@ class AuthController extends Controller
         }
     }
 
-    // public function logout()
-    // {
-    //     if (Auth::check()) {
-    //         Auth::
-    //     }
-    // }
+    public function logout () {
+        $user = request()->user(); //or Auth::user()
+        // Revoke current user token
+        $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Logout Berhasil',
+
+        ],200);
+    }
 }
