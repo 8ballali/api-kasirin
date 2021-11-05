@@ -18,7 +18,7 @@ class User extends Authenticatable
      *
      * @var string[]
      */
-    protected $fillable = ['name', 'email', 'token', 'fcm_token', 'address', 'gender', 'avatar', 'phone', 'password'];
+    protected $fillable = ['name', 'email', 'token', 'fcm_token', 'address', 'gender', 'avatar', 'phone', 'password', 'role_id'];
 
 
 
@@ -59,10 +59,7 @@ class User extends Authenticatable
     //     return $this->user_store()->first();
     // }
 
-    public function user_role()
-    {
-        return $this->hasOne(User_Role::class,'user_id', 'id');
-    }
+
 
     public function user_store()
     {
@@ -75,7 +72,7 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'role_users');
+        return $this->hasOne(Role::class,'user_id','id');
     }
 
     public function sendPasswordResetNotification($token)

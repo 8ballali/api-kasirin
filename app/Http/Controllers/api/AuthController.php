@@ -46,16 +46,13 @@ class AuthController extends Controller
             'avatar' => $avatar,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
-        ]);
-        $user_role = User_Role::create([
-            'user_id' => $register->id,
-            'role_id' => '1'
+            'role_id' => 1
         ]);
         if ($register) {
             return response()->json([
                 'success' =>true,
                 'message' => 'Registrasi Berhasil',
-                'data' => [$register, $user_role]
+                'data' => $register
             ], 201);
         } else {
             return response()->json([

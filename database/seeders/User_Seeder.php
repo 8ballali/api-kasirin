@@ -26,6 +26,7 @@ class User_Seeder extends Seeder
             'avatar'=>'',
             'phone' => $faker->e164PhoneNumber,
             'password' => Hash::make('12345678'),
+            'role_id' => 1
         ]);
     }
 }

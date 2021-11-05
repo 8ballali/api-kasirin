@@ -49,6 +49,7 @@ Route::get('verify-email/{id}/{hash}', [EmailVerificationController::class, 'ver
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('karyawan', [KaryawanController::class, 'index']);
+    Route::delete('karyawan/delete/{user}', [KaryawanController::class, 'destroy']);
     Route::post('karyawan/add', [KaryawanController::class, 'create']);
     Route::get('logout', [AuthController::class, 'logout']);
     Route::post('update-password', [AuthController::class, 'updatePassword']);

@@ -15,23 +15,29 @@ use Symfony\Component\HttpFoundation\Response;
 
 class KaryawanController extends Controller
 {
-    public function index()
-    {
-        $karyawan = User_Role::all()->with('store');
+    public function index(Request $request)
 
+    {
+        $karyawan = User::where('role_id', 2)->whereHas('user_store', function ($query) use ($request)
+        {
+            $query->where('store_id',$request->store_id);
+        })->get();
         if ($karyawan->isNotEmpty()) {
             return response()->json([
                 'success' => true,
-                'message' => 'data Karyawan',
-                'data' => $karyawan
+                'message' => 'Data Karyawan',
+                'data' => $karyawan,
             ],200);
         }else {
             return response()->json([
                 'success' => false,
-                'message' => 'Karyawan tidak ditemukan',
-                'data' => []
-            ], 404);
+                'message' => 'Data Karyawan Tidak ditemukan',
+                'data' => [],
+            ],404);
         }
+
+
+
     }
 
     public function create(Request $request)
@@ -63,11 +69,9 @@ class KaryawanController extends Controller
             'avatar' => $avatar,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
-        ]);
-        $user_role = User_Role::create([
-            'user_id' => $register->id,
             'role_id' => 2
         ]);
+
         $user_store = User_Store::create([
             'user_id' => $register->id,
             'store_id' => $request->store_id
@@ -75,7 +79,31 @@ class KaryawanController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Karyawan has Been Created',
-            'data' => [$register,$user_role,$user_store]
+            'data' => [$register,$user_store]
         ]);
+    }
+    public function destroy($id)
+    {
+        $karyawan = User::find($id);
+        if (!$karyawan) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Karyawan Tidak Ditemukan',
+            ],404);
+        }
+        try {
+            $karyawan->delete();
+            $response = [
+                'success' => true,
+                'message' => 'Data Karyawan Deleted'
+            ];
+
+            return response()->json($response, Response::HTTP_OK);
+
+        } catch (QueryException $e ) {
+            return response()->json([
+                'message' => "Failed " . $e->errorInfo
+            ]);
+        }
     }
 }
