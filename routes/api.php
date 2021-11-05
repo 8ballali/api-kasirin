@@ -8,9 +8,11 @@ use App\Http\Controllers\api\ContactController;
 use App\Http\Controllers\api\ContactUsController;
 use App\Http\Controllers\api\EditProfileController;
 use App\Http\Controllers\api\FaqController;
+use App\Http\Controllers\api\KaryawanController;
 use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\api\PrivacyPolicyController;
 use App\Http\Controllers\api\ProductController;
+use App\Http\Controllers\api\ResetPasswordController;
 use App\Http\Controllers\api\RoleController;
 use App\Http\Controllers\api\Statistic;
 use App\Http\Controllers\api\StatistikCategory;
@@ -40,9 +42,16 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login/admin', [AdminController::class, 'login']);
 Route::post('register/admin', [AdminController::class, 'register']);
+Route::post('forgot-password', [ResetPasswordController::class, 'forgotPassword']);
+Route::post('reset-password', [ResetPasswordController::class, 'reset']);
+Route::post('email/verification-notification', [EmailVerificationController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
+Route::get('verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
 Route::middleware(['auth:sanctum'])->group(function () {
 
+    Route::get('karyawan', [KaryawanController::class, 'index']);
+    Route::post('karyawan/add', [KaryawanController::class, 'create']);
     Route::get('logout', [AuthController::class, 'logout']);
+    Route::post('update-password', [AuthController::class, 'updatePassword']);
     Route::get('users', [UserController::class, 'index']);
     Route::get('product', [ProductController::class, 'index']);
     Route::get('product/{id}', [ProductController::class, 'show']);

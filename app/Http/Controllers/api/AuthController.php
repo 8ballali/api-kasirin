@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\User_Role;
 use App\Models\User_Store;
 use Exception;
 use Illuminate\Http\Request;
@@ -37,7 +38,6 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        // dd($data);
         $register = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -47,12 +47,15 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
         ]);
-        $register->roles()->attach(Role::where('name', 'user')->first());
+        $user_role = User_Role::create([
+            'user_id' => $register->id,
+            'role_id' => '1'
+        ]);
         if ($register) {
             return response()->json([
                 'success' =>true,
                 'message' => 'Registrasi Berhasil',
-                'data' => $register
+                'data' => [$register, $user_role]
             ], 201);
         } else {
             return response()->json([
@@ -106,5 +109,29 @@ class AuthController extends Controller
             'message' => 'Logout Berhasil',
 
         ],200);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required',
+        ]);
+        $current_user = auth()->user();
+        if (Hash::check($request->old_password, $current_user->password)) {
+            $current_user->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Password Berhasil Diganti',
+
+            ],200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'messgae' => 'Old Password Doesnt match our records'
+            ],400);
+        }
     }
 }
