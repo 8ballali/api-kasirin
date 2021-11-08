@@ -10,6 +10,7 @@ use App\Models\User_Store;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -81,6 +82,47 @@ class KaryawanController extends Controller
             'message' => 'Karyawan has Been Created',
             'data' => [$register,$user_store]
         ]);
+    }
+    public function update(Request $request, $id )
+    {
+        $data = $request->all();
+        $rules = [
+            'name'          => 'required',
+            'address'       => 'required',
+            'gender'        => 'required',
+            'phone'         => 'required',
+        ];
+        $this->validate($request, [
+        ]);
+        $karyawan = User::find($id);
+        if (!$karyawan) {
+            return response()->json([
+                'message' => 'User Not Found'
+            ]);
+        }
+        if (request()->hasFile('avatar')) {
+            $avatar = request()->file('avatar')->store('image', 'public');
+            if (Storage::disk('public')->exists($karyawan->avatar)) {
+                Storage::disk('public')->delete([$karyawan->avatar]);
+            }
+            $avatar = request()->file('avatar')->store('image', 'public');
+            $data['avatar'] = $avatar;
+            $karyawan->update($data);
+        }else{
+            unset($data['avatar']);
+        }
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+          return response()->json($validator->errors(), 400);
+        }
+        $karyawan->update($data);
+        $response = [
+            'success'   => true,
+            'message'   => 'Data Karyawan Updated',
+            'data'      => $karyawan,
+        ];
+        return response()->json($response, Response::HTTP_OK);
+
     }
     public function destroy($id)
     {
