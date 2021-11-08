@@ -15,8 +15,11 @@ class CreateSubscriptionsTable extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->enum('name', ['Free', 'Premium']);
-            $table->integer('price');
+            $table->string('name');
+            $table->string('description');
+            $table->string('image')->nullable();
+            $table->string('price')->nullable();
+            $table->string('duration');
             $table->timestamps();
         });
     }

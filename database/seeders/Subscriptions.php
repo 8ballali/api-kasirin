@@ -19,13 +19,20 @@ class Subscriptions extends Seeder
     {
 
         $faker = Faker::create('id_ID');
+
         DB::table('subscriptions')->insert([
-            'name' => 'Free',
-            'price' => 0,
+            'name' => 'Trial',
+            'description' => 'Free Trial for New User',
+            'image' => '',
+            'price' => $faker->randomDigit(),
+            'duration' => 10
         ]);
         DB::table('subscriptions')->insert([
-            'name' => 'Premium',
-            'price' => 100000,
+            'name' => 'Silver',
+            'description' => 'Paket Silver memiliki durasi 3 bulan',
+            'image' => '',
+            'price' => $faker->randomDigit(),
+            'duration' => 30
         ]);
 
     }

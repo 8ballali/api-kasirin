@@ -45,7 +45,9 @@ class User extends Authenticatable
 
     protected $appends = [
         'avatar_url',
-        // 'store'
+        'role_name',
+        'Subscribers',
+
     ];
 
 
@@ -53,14 +55,14 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute(){
         return url('storage/'. $this->avatar);
     }
-
-    // public function getStoreAttribute()
-    // {
-    //     return $this->user_store()->first();
-    // }
-
-
-
+    public function getRoleNameAttribute()
+    {
+        return $this->roles->name;
+    }
+    public function getSubscribersAttribute()
+    {
+        return $this->subscriber;
+    }
     public function user_store()
     {
         return $this->hasMany(User_Store::class,'user_id', 'id');
@@ -72,7 +74,7 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->hasOne(Role::class,'user_id','id');
+        return $this->hasOne(Role::class,'id','role_id');
     }
 
     public function sendPasswordResetNotification($token)

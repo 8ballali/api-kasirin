@@ -17,8 +17,7 @@ class CreateSubscribersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('subscription_id');
-            $table->enum('status', ['Free', 'Premium']);
-            $table->unsignedBigInteger('admin_id');
+            $table->enum('status_pembayaran', ['On Proccess','Success', 'Failed'])->nullable();
             $table->timestamp('start_at')->nullable();
             $table->timestamp('stopped_at')->nullable();
             $table->timestamps();
@@ -27,9 +26,6 @@ class CreateSubscribersTable extends Migration
                   ->onDelete('cascade');
             $table->foreign('subscription_id')
                   ->references('id')->on('subscriptions')
-                  ->onDelete('cascade');
-            $table->foreign('admin_id')
-                  ->references('id')->on('admins')
                   ->onDelete('cascade');
         });
     }

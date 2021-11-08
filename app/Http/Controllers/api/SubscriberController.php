@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SubscriberController extends Controller
 {
     public function index(Request $request){
-        $subscriber = Subscriber::with('user')->with('admin')->with('subscription')->when(($request->get('subscription_id')), function ($query) use ($request)
+        $subscriber = Subscriber::with('user')->with('subscription')->when(($request->get('subscription_id')), function ($query) use ($request)
         {
             $query->where('subscription_id', $request->header('subscription_id'));
         })

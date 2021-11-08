@@ -9,7 +9,7 @@ class Subscriber extends Model
 {
     use HasFactory;
     protected $table = "subscribers";
-    protected $fillable = ['user_id', 'subscription_id', 'status', 'admin_id', 'start_at', 'stopped_at'];
+    protected $fillable = ['user_id', 'subscription_id', 'status_pembayaran', 'start_at', 'stopped_at'];
 
     public function user()
     {
@@ -20,9 +20,6 @@ class Subscriber extends Model
     {
         return $this->belongsTo(Subsrciption::class);
     }
-    public function admin()
-    {
-        return $this->belongsTo(Admin::class);
-    }
+
 
 }

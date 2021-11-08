@@ -9,5 +9,12 @@ class Subsrciption extends Model
 {
     use HasFactory;
     protected $table = "subscriptions";
-    protected  $fillable = ['name','price'];
+    protected  $fillable = ['name','description', 'image', 'price', 'duration'];
+
+    public function subscriber()
+    {
+        return $this->HasOne(Subscriber::class,'');
+    }
 }
+
+

@@ -4,9 +4,12 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\Subscriber;
+use App\Models\Subsrciption;
 use App\Models\User;
 use App\Models\User_Role;
 use App\Models\User_Store;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -20,6 +23,7 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        $subscriber_trial = Subsrciption::find(1);
         $data = $request->all();
         $rules = [
             'name' => ['required', 'string', 'max:255'],
@@ -48,11 +52,18 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role_id' => 1
         ]);
+        $subscriber = Subscriber::create([
+            'user_id' => $register->id,
+            'subscription_id' => 1,
+            'status_pembayaran' => 'Success',
+            'start_at' => Carbon::now(),
+            'stopped_at' => Carbon::now()->addDays($subscriber_trial->duration),
+        ]);
         if ($register) {
             return response()->json([
                 'success' =>true,
                 'message' => 'Registrasi Berhasil',
-                'data' => $register
+                'data' => [$register, $subscriber]
             ], 201);
         } else {
             return response()->json([
