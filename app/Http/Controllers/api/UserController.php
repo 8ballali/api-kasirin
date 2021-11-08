@@ -52,21 +52,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('user_store')
-        ->get();
-        if ($user) {
-            return response()->json([
-                'success' => true,
-                'message' => "Detail User",
-                'data' => $user
-            ],200);
-        }else {
-            return response()->json([
-                'success' => false,
-                'message' => "User Not Found",
-                'data' => []
-            ],404);
-        }
+
     }
 
     /**

@@ -11,6 +11,15 @@ class Subsrciption extends Model
     protected $table = "subscriptions";
     protected  $fillable = ['name','description', 'image', 'price', 'duration'];
 
+
+    protected $appends = [
+        'image_url',
+    ];
+
+    public function getImageUrlAttribute(){
+        return url('storage/'. $this->image);
+    }
+
     public function subscriber()
     {
         return $this->HasOne(Subscriber::class,'');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserDataResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Testing\File;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EditProfileController extends Controller
 {
+
     public function update(Request $request, $id )
     {
         $data = $request->all();
@@ -62,7 +64,7 @@ class EditProfileController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Detail User',
-                'data' => $user
+                'data' => new UserDataResource($user)
             ],200);
         }else {
             return response()->json([

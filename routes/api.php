@@ -96,7 +96,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('admin/{id}', [AdminController::class, 'show']);
     Route::post('admin/edit/{admin}', [AdminController::class, 'update']);
     Route::get('subscription', [SubscriptionController::class, 'index']);
-    Route::get('subscription/store', [SubscriptionController::class, 'store']);
+    Route::post('subscription/store', [SubscriptionController::class, 'store']);
+    Route::post('subscription/edit/{subscription}', [SubscriptionController::class, 'update']);
     Route::get('subscriber', [SubscriberController::class, 'index']);
     Route::get('subscriber/{id}', [SubscriberController::class, 'show']);
     Route::post('subscriber/store', [SubscriberController::class, 'store']);

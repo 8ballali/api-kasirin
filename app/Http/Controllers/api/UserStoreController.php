@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserDataResource;
+use App\Http\Resources\UserStoreResource;
 use App\Models\User_Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -12,7 +14,7 @@ class UserStoreController extends Controller
 {
     public function index(Request $request)
     {
-        $user_stores =$user_stores = User_Store::with('user')->with('store')->when(($request->get('user_id')), function ($query) use ($request)
+        $user_stores = User_Store::with('user')->with('store')->when(($request->get('user_id')), function ($query) use ($request)
         {
             $query->where('user_id', $request->get('user_id'));
         })
