@@ -50,6 +50,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('karyawan', [KaryawanController::class, 'index']);
     Route::delete('karyawan/delete/{user}', [KaryawanController::class, 'destroy']);
+    Route::post('karyawan/edit/{user}', [KaryawanController::class, 'update']);
+    Route::get('karyawan/{id}', [KaryawanController::class, 'show']);
     Route::post('karyawan/add', [KaryawanController::class, 'create']);
     Route::get('logout', [AuthController::class, 'logout']);
     Route::post('update-password', [AuthController::class, 'updatePassword']);

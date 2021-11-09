@@ -97,7 +97,7 @@ class KaryawanController extends Controller
         $karyawan = User::find($id);
         if (!$karyawan) {
             return response()->json([
-                'message' => 'User Not Found'
+                'message' => 'Karyawan Not Found'
             ]);
         }
         if (request()->hasFile('avatar')) {
@@ -147,5 +147,23 @@ class KaryawanController extends Controller
                 'message' => "Failed " . $e->errorInfo
             ]);
         }
+    }
+    public function show($id)
+    {
+        $karyawan = User::find($id);
+        if ($karyawan) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Karyawan',
+                'data'    => $karyawan
+            ],200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Karyawan Not Found',
+                'data'    => [],
+            ],404);
+        }
+
     }
 }

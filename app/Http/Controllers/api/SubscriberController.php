@@ -4,6 +4,8 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Subscriber;
+use App\Models\Subsrciption;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,45 +36,36 @@ class SubscriberController extends Controller
         return response()->json($response, Response::HTTP_OK);
     }
 
-    public function store(Request $request)
-    {
-        $data = $request->all();
-        $rules = [
-            'user_id'          => 'required',
-            'subscription_id' => 'required',
-            'status'         => 'required',
-            'admin_id'         => 'required',
-        ];
-
-        $validator = Validator::make($data, $rules);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-        $subscriber = Subscriber::create($data);
-        $response = [
-            'success'      => true,
-            'message'    => 'Data subscriber Created',
-            'data'      => $subscriber,
-        ];
-        return response()->json($response, Response::HTTP_CREATED);
-    }
-
     public function update(Request $request, subscriber $subscriber)
     {
-        $data = $request->all();
+        $subscriber = Subscriber::find();
+        $subscriber_trial = Subsrciption::all();
         $rules = [
             'user_id'          => 'required',
-            'subscription_id' => 'required',
-            'status'         => 'required',
-            'admin_id'         => 'required',
+            'subscription_id'  => 'required',
+            'status_pembayaran' => 'required',
         ];
-
-
-        $validator = Validator::make($data, $rules);
+        $validator = Validator::make($rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        $subscriber->update($data);
+        if ($subscriber->stopped_at > Carbon::now()) {
+            $subscriber->update([
+                'user_id' => $request->id,
+                'subscription_id' => $request->subscription_id,
+                'status_pembayaran' => 'On Proccess',
+                'start_at' => Carbon::now(),
+                'stopped_at' => Carbon::now()->addDays($subscriber_trial->duration),
+            ]);
+        }elseif ($subscriber->stopped_at < Carbon::now()) {
+            $subscriber->update([
+                'user_id' => $request->id,
+                'subscription_id' => $request->subscription_id,
+                'status_pembayaran' => 'Success',
+                'start_at' => Carbon::now(),
+                'stopped_at' => Carbon::now()->addDays($subscriber->duration),
+            ]);
+        }
         $response = [
             'success'   => true,
             'message'   => 'Data subscriber Updated',
