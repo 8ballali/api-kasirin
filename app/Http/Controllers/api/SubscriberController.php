@@ -7,6 +7,7 @@ use App\Models\Subscriber;
 use App\Models\Subsrciption;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -36,36 +37,36 @@ class SubscriberController extends Controller
         return response()->json($response, Response::HTTP_OK);
     }
 
-    public function update(Request $request, subscriber $subscriber)
+    public function update(Request $request, $id)
     {
-        $subscriber = Subscriber::find();
-        $subscriber_trial = Subsrciption::all();
+        $data = $request->all();
         $rules = [
-            'user_id'          => 'required',
+
             'subscription_id'  => 'required',
-            'status_pembayaran' => 'required',
         ];
-        $validator = Validator::make($rules);
+        $subscriber = Subscriber::where('user_id',$id)->first();
+
+        if (request()->hasFile('foto_struk')) {
+            $foto_struk = request()->file('foto_struk')->store('image', 'public');
+            if (Storage::disk('public')->exists($subscriber->image)) {
+                Storage::disk('public')->delete([$subscriber->image]);
+            }
+            $foto_struk = request()->file('foto_struk')->store('image', 'public');
+            $data['foto_struk'] = $foto_struk;
+            $subscriber->update($data);
+        }else{
+            unset($data['image']);
+        }
+        $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        if ($subscriber->stopped_at > Carbon::now()) {
-            $subscriber->update([
-                'user_id' => $request->id,
-                'subscription_id' => $request->subscription_id,
-                'status_pembayaran' => 'On Proccess',
-                'start_at' => Carbon::now(),
-                'stopped_at' => Carbon::now()->addDays($subscriber_trial->duration),
-            ]);
-        }elseif ($subscriber->stopped_at < Carbon::now()) {
-            $subscriber->update([
-                'user_id' => $request->id,
-                'subscription_id' => $request->subscription_id,
-                'status_pembayaran' => 'Success',
-                'start_at' => Carbon::now(),
-                'stopped_at' => Carbon::now()->addDays($subscriber->duration),
-            ]);
-        }
+        $subscriber->update([
+            'subscription_id' => $request->subscription_id,
+            'status_pembayaran' => 'On Proccess',
+            'start_at' => $subscriber->start_at,
+            'stopped_at' => $subscriber->stopped_at,
+        ]);
         $response = [
             'success'   => true,
             'message'   => 'Data subscriber Updated',

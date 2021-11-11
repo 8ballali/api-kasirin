@@ -103,7 +103,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('subscriber', [SubscriberController::class, 'index']);
     Route::get('subscriber/{id}', [SubscriberController::class, 'show']);
     Route::post('subscriber/store', [SubscriberController::class, 'store']);
-    Route::post('subscriber/edit/{subscriber}', [SubscriberController::class, 'update']);
+    Route::post('subscriber/edit/{id}', [SubscriberController::class, 'update']);
     Route::resource('/stores', StoreController::class)->except(['create', 'edit']);
     Route::resource('/privacy', PrivacyPolicyController::class)->except(['create', 'edit']);
     Route::resource('/transaction', TransactionController::class)->except(['create', 'edit']);

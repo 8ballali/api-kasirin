@@ -67,6 +67,7 @@ class TransactionController extends Controller
             'pay'            => 'required',
             'discount'       => 'nullable',
             'change'         => 'required',
+            'store_id'         => 'required',
         ];
 
         $validator = Validator::make($data, $rules);
