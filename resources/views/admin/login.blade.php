@@ -264,12 +264,12 @@ footer a {
 <body>
 
 <div class="container" id="container">
-	<div class="form-container sign-up-container">
-		<form action="#">
+	<div class="form-container  sign-up-container" >
+		<form action="{{route('register')}}" method="post">
+            {{ csrf_field() }}
 			<h1>Create Account</h1>
-			<input type="text" placeholder="Name" />
-			<input type="email" placeholder="Email" />
-			<input type="password" placeholder="Password" />
+			<input type="email" name="email" placeholder="Email" />
+			<input type="password" name="password" placeholder="Password" />
 			<button>Sign Up</button>
 		</form>
 	</div>
@@ -278,7 +278,7 @@ footer a {
             {{ csrf_field() }}
 			<h1>Sign in</h1>
 			<input type="email" name="email" class="form-control" placeholder="Email">
-			<input type="password" name="password" class="form-control" placeholder="Password" >
+			<input type="password" name="password"  class="form-control" placeholder="Password" >
 
 			<button>Sign In</button>
 		</form>
@@ -301,7 +301,7 @@ footer a {
 
 
 <script>
-    const signUpButton = document.getElementById('signUp');
+const signUpButton = document.getElementById('signUp');
 const signInButton = document.getElementById('signIn');
 const container = document.getElementById('container');
 
@@ -312,6 +312,43 @@ signUpButton.addEventListener('click', () => {
 signInButton.addEventListener('click', () => {
 	container.classList.remove("right-panel-active");
 });
+var pwd = document.getElementById('pwd');
+var eye = document.getElementById('eye');
+
+eye.addEventListener('click',togglePass);
+
+function togglePass(){
+
+   eye.classList.toggle('active');
+
+   (pwd.type == 'password') ? pwd.type = 'text' : pwd.type = 'password';
+}
+
+// Form Validation
+
+
+function verifyPassword() {
+  var pw = document.getElementsByClassName("password").value;
+  //check empty password field
+  if(pw == "") {
+    document.getElementsByClassName("message").innerHTML = "**Fill the password please!";
+     return false;
+  }
+
+ //minimum password length validation
+  if(pw.length < 8) {
+     document.getElementsByClassName("message").innerHTML = "**Password length must be atleast 8 characters";
+     return false;
+  }
+
+//maximum length of password validation
+  if(pw.length > 15) {
+     document.getElementsByClassName("message").innerHTML = "**Password length must not exceed 15 characters";
+     return false;
+  } else {
+     alert("Password is correct");
+  }
+}
 </script>
 </body>
 </html>

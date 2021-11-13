@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
-class Admin extends Model
+class Admin extends Authenticatable
 {
-    use HasFactory;
+    use Notifiable;
+    protected $guard = 'admin';
+    protected $table = "admins";
     protected $fillable = ['email', 'password'];
 
-    public function subscriber()
-    {
-        return $this->hasOne(Subscriber::class,'admin_id','id');
-    }
+
 }

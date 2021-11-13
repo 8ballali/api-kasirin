@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\admin\AuthController;
 use App\Http\Controllers\admin\SubscriberController;
 use App\Http\Controllers\admin\SubscriptionController;
+use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,14 +17,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/kasirin-toko/subscriptions', [SubscriptionController::class, 'index']);
-Route::get('/kasirin-toko/subscriptions/add', [SubscriptionController::class, 'add']);
-Route::post('/kasirin-toko/subscriptions/store', [SubscriptionController::class, 'store']);
-Route::get('/kasirin-toko/subscriptions/edit/{id}', [SubscriptionController::class, 'edit']);
-Route::put('/kasirin-toko/subscriptions/update/{id}', [SubscriptionController::class, 'update']);
-Route::get('/kasirin-toko/subscribers', [SubscriberController::class, 'index']);
-Route::get('/kasirin-toko/subscribers/edit/{id}', [SubscriberController::class, 'edit']);
-Route::put('/kasirin-toko/subscribers/update/{id}', [SubscriberController::class, 'update']);
+
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/auth', [AuthController::class, 'index']);
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::group(['middleware' => ['auth:admin']], function () {
+    Route::get('/kasirin-toko/subscriptions', [SubscriptionController::class, 'index']);
+    Route::get('/kasirin-toko/subscriptions/add', [SubscriptionController::class, 'add']);
+    Route::post('/kasirin-toko/subscriptions/store', [SubscriptionController::class, 'store']);
+    Route::get('/kasirin-toko/subscriptions/edit/{id}', [SubscriptionController::class, 'edit']);
+    Route::put('/kasirin-toko/subscriptions/update/{id}', [SubscriptionController::class, 'update']);
+    Route::get('/kasirin-toko/subscribers', [SubscriberController::class, 'index']);
+    Route::get('/kasirin-toko/subscribers/edit/{id}', [SubscriberController::class, 'edit']);
+    Route::put('/kasirin-toko/subscribers/update/{id}', [SubscriberController::class, 'update']);
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+});
 
 Route::get('/', function () {
     return view('welcome');

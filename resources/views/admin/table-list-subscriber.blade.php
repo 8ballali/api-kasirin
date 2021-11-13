@@ -130,20 +130,14 @@
                                 </li>
                             </ul>
                         </li>
-
-
-                        {{-- <li class="nav-item">
-                            <div class=" " aria-labelledby="navbarDropdown">
-                                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li> --}}
+                        <li class="nav-item">
+                            <a href="{{route('logout')}}" class="nav-link">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>
+                                    Logout
+                                </p>
+                            </a>
+                        </li>
                         <!-- /.sidebar-menu -->
             </div>
             <!-- /.sidebar -->
