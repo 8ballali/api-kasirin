@@ -15,5 +15,9 @@ class Transaction_detail extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    public function transactions()
+    {
+        return $this->belongsTo(Transaction::class,'transaction_id');
+    }
 
 }

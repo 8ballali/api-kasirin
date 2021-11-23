@@ -110,7 +110,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('/detail-transaction', TransactionDetailController::class)->except(['create', 'edit']);
     Route::get('stats/product', [Statistic::class, 'index']);
     Route::get('stats/category', [StatistikCategory::class, 'index']);
-    Route::get('stats/income', [StatistikPendapatan::class, 'index']);
+    Route::get('stats/income/daily', [StatistikPendapatan::class, 'daily']);
+    Route::get('stats/income/weekly', [StatistikPendapatan::class, 'weekly']);
+    Route::get('stats/income/monthly', [StatistikPendapatan::class, 'monthly']);
+    Route::get('stats/income/yearly', [StatistikPendapatan::class, 'yearly']);
     Route::get('/test', function () {
         return 'oek';
     });

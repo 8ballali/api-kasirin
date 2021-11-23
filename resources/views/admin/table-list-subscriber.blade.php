@@ -199,7 +199,7 @@
                                         <a href="{{url('/e-vote/admin/community/delete/'.$subs->id)}}"
                                             onClick="confirm('Delete entry?')" class="btn btn-danger btn-sm">Hapus</a>
                                         <a href="{{url('/kasirin-toko/subscribers/edit/'.$subs->id)}}"
-                                            class="btn btn-warning">Edit</a>
+                                            class="btn btn-success">Konfirmasi</a>
                                     </td>
 
                                 </tr>

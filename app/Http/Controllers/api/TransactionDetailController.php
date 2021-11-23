@@ -17,9 +17,10 @@ class TransactionDetailController extends Controller
      */
     public function index(Request $request)
     {
-        $detail_transaction = Transaction_detail::with('product')->when(($request->get('transaction_id')), function ($query) use ($request)
+        $detail_transaction = Transaction_detail::with('product')->with('transactions')->when(($request->get('transaction_id')), function ($query) use ($request)
         {
             $query->where('transaction_id', $request->get('transaction_id'));
+
         })->when(($request->get('tanggal')), function ($query) use ($request)
         {
             $query->whereDate('Transaction_details.created_at', 'like', '%' . $request->tanggal . '%' ,);
@@ -96,6 +97,7 @@ class TransactionDetailController extends Controller
     {
         //
     }
+
 
     /**
      * Update the specified resource in storage.

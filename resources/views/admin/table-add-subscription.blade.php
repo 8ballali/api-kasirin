@@ -86,7 +86,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item menu-open">
-                            <a href="{{url('/kasirin-toko/subscriptions')}}" class="nav-link ">
+                            <a href="{{url('/kasirin-toko/subscriptions')}}" class="nav-link active">
 
                                 <i class="nav-icon fas fa-file-invoice-dollar"></i>
                                 <p>
@@ -102,13 +102,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{url('/kasirin-toko/subscriptions')}}" class="nav-link ">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>List Subscriptions</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{url('/kasirin-toko/subscriptions/add')}}" class="nav-link ">
+                                    <a href="{{url('/kasirin-toko/subscriptions/add')}}" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Add Subscriptions</p>
                                     </a>
@@ -116,7 +110,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('/kasirin-toko/subscribers')}}" class="nav-link active">
+                            <a href="{{url('/kasirin-toko/subscribers')}}" class="nav-link">
                                 <i class="nav-icon far fa-address-book"></i>
                                 <p>
                                     Subscribers
@@ -126,7 +120,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{url('/kasirin-toko/subscribers')}}" class="nav-link active">
+                                    <a href="{{url('/kasirin-toko/subscribers')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>List Subscribers</p>
                                     </a>
@@ -172,7 +166,7 @@
                             Add Subscriptions
                         </div>
                         <div class="card-body">
-                            <a href="{{url('/e-vote/admin/candidate')}}" class="btn btn-primary">Back</a>
+                            <a href="{{url('/kasirin-toko/subscriptions')}}" class="btn btn-primary">Back</a>
                             <br />
                             <br />
 

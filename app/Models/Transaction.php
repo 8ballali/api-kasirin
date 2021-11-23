@@ -16,5 +16,8 @@ class Transaction extends Model
     {
         return $this->belongsTo(Store::class,'store_id');
     }
+    public function transaction_detail(){
+        return $this->hasOne(Transaction_detail::class);
+    }
 
 }
