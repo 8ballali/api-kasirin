@@ -109,7 +109,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('/transaction', TransactionController::class)->except(['create', 'edit']);
     Route::resource('/detail-transaction', TransactionDetailController::class)->except(['create', 'edit']);
     Route::get('stats/product', [Statistic::class, 'index']);
-    Route::get('stats/category', [StatistikCategory::class, 'index']);
+    Route::get('stats/category/daily', [StatistikCategory::class, 'daily']);
+    Route::get('stats/category/weekly', [StatistikCategory::class, 'weekly']);
+    Route::get('stats/category/monthly', [StatistikCategory::class, 'monthly']);
+    Route::get('stats/category/yearly', [StatistikCategory::class, 'yearly']);
     Route::get('stats/income/daily', [StatistikPendapatan::class, 'daily']);
     Route::get('stats/income/weekly', [StatistikPendapatan::class, 'weekly']);
     Route::get('stats/income/monthly', [StatistikPendapatan::class, 'monthly']);
