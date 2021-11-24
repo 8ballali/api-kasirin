@@ -78,7 +78,7 @@ class StoreController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'store has Been Created',
-            'data' => [$store,$user_store]
+            'data' => $store
         ]);
     }
 

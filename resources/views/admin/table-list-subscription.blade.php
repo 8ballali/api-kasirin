@@ -193,7 +193,7 @@
                                     <td>{{ $su->updated_at }}</td>
 
                                     <td>
-                                        <a href="{{url('/e-vote/admin/community/delete/'.$su->id)}}"
+                                        <a href="{{url('/kasirin-toko/subscriptions/delete/'.$su->id)}}"
                                             onClick="confirm('Delete entry?')" class="btn btn-danger btn-sm">Hapus</a>
                                         <a href="{{url('/kasirin-toko/subscriptions/edit/'.$su->id)}}"
                                             class="btn btn-warning">Edit</a>

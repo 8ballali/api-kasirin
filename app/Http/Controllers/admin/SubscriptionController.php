@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Subsrciption;
+use Database\Seeders\Subscriptions;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -86,5 +87,10 @@ class SubscriptionController extends Controller
         }
         $subscriptions->update($data);
         return redirect('/kasirin-toko/subscriptions');
+    }
+    public function delete($id){
+        $subscriptions = Subsrciption::find($id);
+        $subscriptions->delete();
+        return redirect ('/kasirin-toko/subscriptions');
     }
 }

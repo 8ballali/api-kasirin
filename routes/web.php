@@ -25,6 +25,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/kasirin-toko/subscriptions', [SubscriptionController::class, 'index']);
+    Route::get('/kasirin-toko/subscriptions/delete/{id}', [SubscriptionController::class, 'delete']);
     Route::get('/kasirin-toko/subscriptions/add', [SubscriptionController::class, 'add']);
     Route::post('/kasirin-toko/subscriptions/store', [SubscriptionController::class, 'store']);
     Route::get('/kasirin-toko/subscriptions/edit/{id}', [SubscriptionController::class, 'edit']);
