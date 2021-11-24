@@ -28,7 +28,7 @@ class StatistikCategory extends Controller
         }
         $categories_daily = Transaction_detail::join('products', 'products.id', 'product_id')
         ->join('categories', 'categories.id', 'products.category_id')
-        ->groupBy('transaction_details.product_id')
+        ->groupBy('category_id')
         ->selectRaw('count(*) as Dibeli, categories.name')->orderByRaw('Dibeli desc')
         ->when(($request->get('store_id')), function ($query) use ($request)
         {
@@ -71,7 +71,7 @@ class StatistikCategory extends Controller
         }
         $categories_daily = Transaction_detail::whereBetween('transaction_details.created_at', [$start, $end])->join('products', 'products.id', 'product_id')
         ->join('categories', 'categories.id', 'products.category_id')
-        ->groupBy('transaction_details.product_id')
+        ->groupBy('category_id')
         ->selectRaw('count(*) as Dibeli, categories.name')->orderByRaw('Dibeli desc')
         ->when(($request->get('store_id')), function ($query) use ($request)
         {
@@ -110,7 +110,7 @@ class StatistikCategory extends Controller
         }
         $categories_monthly = Transaction_detail::whereMonth('transaction_details.created_at', $now)->join('products', 'products.id', 'product_id')
         ->join('categories', 'categories.id', 'products.category_id')
-        ->groupBy('transaction_details.product_id')
+        ->groupBy('category_id')
         ->selectRaw('count(*) as Dibeli, categories.name')->orderByRaw('Dibeli desc')
         ->when(($request->get('store_id')), function ($query) use ($request)
         {
@@ -150,7 +150,7 @@ class StatistikCategory extends Controller
         }
         $categories_yearly = Transaction_detail::whereYear('transaction_details.created_at', $now)->join('products', 'products.id', 'product_id')
         ->join('categories', 'categories.id', 'products.category_id')
-        ->groupBy('transaction_details.product_id')
+        ->groupBy('category_id')
         ->selectRaw('count(*) as Dibeli, categories.name')->orderByRaw('Dibeli desc')
         ->when(($request->get('store_id')), function ($query) use ($request)
         {

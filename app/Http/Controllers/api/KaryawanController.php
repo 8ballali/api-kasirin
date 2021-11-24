@@ -80,7 +80,7 @@ class KaryawanController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Karyawan has Been Created',
-            'data' => [$register,$user_store]
+            'data' => $register
         ]);
     }
     public function update(Request $request, $id )
