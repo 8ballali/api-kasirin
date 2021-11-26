@@ -8,6 +8,8 @@ use App\Http\Controllers\api\ContactController;
 use App\Http\Controllers\api\ContactUsController;
 use App\Http\Controllers\api\EditProfileController;
 use App\Http\Controllers\api\FaqController;
+use App\Http\Controllers\api\FilterStrukController;
+use App\Http\Controllers\api\JumlahTransaksiController;
 use App\Http\Controllers\api\KaryawanController;
 use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\api\PrivacyPolicyController;
@@ -120,6 +122,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('stats/income/weekly', [StatistikPendapatan::class, 'weekly']);
     Route::get('stats/income/monthly', [StatistikPendapatan::class, 'monthly']);
     Route::get('stats/income/yearly', [StatistikPendapatan::class, 'yearly']);
+    Route::get('stats/transaction/daily', [JumlahTransaksiController::class, 'daily']);
+    Route::get('stats/transaction/weekly', [JumlahTransaksiController::class, 'weekly']);
+    Route::get('stats/transaction/monthly', [JumlahTransaksiController::class, 'monthly']);
+    Route::get('stats/transaction/yearly', [JumlahTransaksiController::class, 'yearly']);
+    Route::get('filter/transaction', [FilterStrukController::class, 'index']);
     Route::get('/test', function () {
         return 'oek';
     });
