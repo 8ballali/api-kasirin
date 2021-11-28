@@ -27,6 +27,8 @@ use App\Http\Controllers\api\TransactionDetailController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\UserRoleController;
 use App\Http\Controllers\api\UserStoreController;
+use App\Http\Controllers\api\TrendTransaksiController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -127,6 +129,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('stats/transaction/monthly', [JumlahTransaksiController::class, 'monthly']);
     Route::get('stats/transaction/yearly', [JumlahTransaksiController::class, 'yearly']);
     Route::get('filter/transaction', [FilterStrukController::class, 'index']);
+    Route::get('trend/transaction/daily', [TrendTransaksiController::class, 'daily']);
+    Route::get('trend/transaction/weekly', [TrendTransaksiController::class, 'weekly']);
     Route::get('/test', function () {
         return 'oek';
     });
