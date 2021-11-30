@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -36,7 +37,7 @@ class ContactController extends Controller
                 'success' => false,
                 'message' => 'Data Contact Not Found',
                 'data' => []
-            ],404);
+            ],200);
         }
     }
 
@@ -62,16 +63,30 @@ class ContactController extends Controller
         return response()->json($response, Response::HTTP_CREATED);
     }
 
-    public function update(Request $request, Contact $contact)
+    public function update(Request $request, $id)
     {
         $data = $request->all();
         $rules = [
             'name'          => 'required',
-            'image'      => 'required',
             'content'          => 'required',
         ];
-        $image = $request->image->store('image', 'public');
-        $data['image'] = $image;
+        $contact = Contact::find($id);
+        if (!$contact) {
+            return response()->json([
+                'message' => 'Contact Not Found'
+            ]);
+        }
+        if (request()->hasFile('image')) {
+            $image = request()->file('image')->store('image', 'public');
+            if (Storage::disk('public')->exists($contact->image)) {
+                Storage::disk('public')->delete([$contact->image]);
+            }
+            $image = request()->file('image')->store('image', 'public');
+            $data['image'] = $image;
+            $contact->update($data);
+        }else{
+            unset($data['image']);
+        }
         $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -79,7 +94,7 @@ class ContactController extends Controller
         $contact->update($data);
         $response = [
             'success'   => true,
-            'message'   => 'Data contact Updated',
+            'message'   => 'Data Contact Updated',
             'data'      => $contact,
         ];
         return response()->json($response, Response::HTTP_OK);

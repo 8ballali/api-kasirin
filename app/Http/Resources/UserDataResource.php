@@ -24,7 +24,7 @@ class UserDataResource extends JsonResource
             'role_id' => $this->role_id,
             'role_name' => $this->roles->name,
             'user_store' => UserStoreResource::collection($this->user_store),
-            'subscription_name' => $this->subscriber->subscription->name,
+            'subscription_name' => $this->subscriber->subscription->name ?? "",
             'subscription_start_at' => $this->subscriber->start_at,
             'subscription_stopped_at' => $this->subscriber->stopped_at
         ];

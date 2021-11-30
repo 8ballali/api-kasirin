@@ -11,40 +11,23 @@ class TrendTransaksiController extends Controller
 {
     public function daily(Request $request)
     {
-        $now = Carbon::parse($request->tanggal);
-        $trend_daily = Transaction::when(($request->get('store_id')), function ($query) use ($request)
-        {
-            $query->where('store_id', $request->store_id);
-
-        })
-        ->select('price', 'created_at')
-        ->groupBy('created_at')
-        ->WhereDay('created_at', $now)
-        ->get();
-        return response()->json([
-            'success' => true,
-            'message' => 'Trend Transaksi',
-            'data' => $trend_daily
-        ],200);
+       $date = Carbon::now()->day(1)->month($request->month)->year($request->year);
+       $dayOfMonth = $date->daysInMonth;
+       for ($i=1; $i <= $dayOfMonth; $i++) {
+            $trends[] = Transaction::whereDay('created_at', $i)->whereMonth('created_at', $request->month)->whereYear('created_at', $request->year)->sum('price');
+       }
+       return response()->json([
+           'data' => $trends
+       ],200);
     }
-    public function weekly(Request $request)
+    public function yearly(Request $request)
     {
-        $now = Carbon::parse($request->tanggal);
-        $start = $now->startOfWeek()->format('Y-m-d H:i');
-        $end = $now->endOfWeek()->format('Y-m-d H:i');
-        $trend_weekly = Transaction::when(($request->get('store_id')), function ($query) use ($request)
-        {
-            $query->where('store_id', $request->store_id);
-
-        })
-        ->select('price', 'created_at')
-        ->groupBy('created_at')
-        ->WhereBetween('created_at', [$start,$end])
-        ->get();
+        $date = Carbon::parse(now()->month(12)->year($request->year));
+        for ($i=1; $i <= $date ; $i++) {
+            $trends_year=Transaction::whereMonth('created_at', $i)->whereYear('created_at', $request->year)->sum('price');
+        }
         return response()->json([
-            'success' => true,
-            'message' => 'Trend Transaksi',
-            'data' => $trend_weekly
+            'data' => $trends_year
         ],200);
     }
 

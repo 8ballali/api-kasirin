@@ -129,8 +129,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('stats/transaction/monthly', [JumlahTransaksiController::class, 'monthly']);
     Route::get('stats/transaction/yearly', [JumlahTransaksiController::class, 'yearly']);
     Route::get('filter/transaction', [FilterStrukController::class, 'index']);
-    Route::get('trend/transaction/daily', [TrendTransaksiController::class, 'daily']);
-    Route::get('trend/transaction/weekly', [TrendTransaksiController::class, 'weekly']);
+    Route::post('trend/transaction/daily', [TrendTransaksiController::class, 'daily']);
+    Route::post('trend/transaction/yearly', [TrendTransaksiController::class, 'yearly']);
     Route::get('/test', function () {
         return 'oek';
     });

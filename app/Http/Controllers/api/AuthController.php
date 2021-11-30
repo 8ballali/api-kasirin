@@ -70,7 +70,7 @@ class AuthController extends Controller
                 'success' =>false,
                 'message' => 'Registrasi Gagal',
 
-            ], 400);
+            ], 200);
         }
     }
 
@@ -139,7 +139,7 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'messgae' => 'Old Password Doesnt match our records'
-            ],400);
+            ],200);
         }
     }
 }

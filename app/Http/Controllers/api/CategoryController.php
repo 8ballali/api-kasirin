@@ -25,7 +25,7 @@ class CategoryController extends Controller
                 'success' => false,
                 'message' => 'Category Not Found',
                 'data' => []
-            ],404);
+            ],200);
         }
     }
 
@@ -43,7 +43,7 @@ class CategoryController extends Controller
                 'success' => false,
                 'message' => 'Category Not Found',
 
-            ],404);
+            ],200);
         }
     }
 
@@ -96,7 +96,7 @@ class CategoryController extends Controller
             $response = [
                 'success' => true,
                 'message' => 'Data Category Deleted'
-            ];
+            ,200];
 
             return response()->json($response, Response::HTTP_OK);
 

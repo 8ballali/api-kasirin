@@ -29,13 +29,13 @@ class AboutsController extends Controller
                 'success' => true,
                 'message' => 'Detail About Us',
                 'data' => $abouts
-            ]);
+            ],200);
         }else {
             return response()->json([
                 'success' => false,
                 'message' => 'Data About Us Not Found',
                 'data' => []
-            ],404);
+            ],200);
         }
 
     }

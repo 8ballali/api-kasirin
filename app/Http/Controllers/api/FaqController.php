@@ -35,7 +35,7 @@ class FaqController extends Controller
                 'success' => false,
                 'message' => 'Data Not Found',
                 'data' => []
-            ],404);;
+            ],200);;
         }
     }
 
@@ -88,7 +88,7 @@ class FaqController extends Controller
             $response = [
                 'success' => true,
                 'message' => 'Data FAQ Deleted'
-            ];
+            ,200];
 
             return response()->json($response, Response::HTTP_OK);
 
