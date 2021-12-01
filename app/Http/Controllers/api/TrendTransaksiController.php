@@ -51,26 +51,25 @@ class TrendTransaksiController extends Controller
                 'message' => 'Please Insert Your Store'
             ],200);
         }
-        // if (!$request->year) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'Please Insert Year'
-        //     ],200);
-        // }
+        if (!$request->year) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please Input Year'
+            ],200);
+        }
         $month = [];
         for ($m=0; $m < 12 ; $m++) {
             $month[$m]["total_transaksi"]=Transaction::when(($request->get('store_id')), function ($query) use ($request)
             {
                 $query->where('store_id', $request->store_id);
 
-            })->whereYear('created_at', Carbon::parse($date)->setMonth($m+2))->get()->sum('price');
+            })->whereYear('created_at', Carbon::parse($date)->setMonth($m+2))->whereMonth('created_at', Carbon::parse($date)->setMonth($m+2))->get()->sum('price');
             $month[$m]["waktu"] = Carbon::parse($date)->setMonth($m+2);
         }
         return response()->json([
             'data' => $month
         ],200);
     }
-
     public function weekly(Request $request)
     {
         $now = Carbon::now()->month($request->month)->year($request->year);
@@ -81,7 +80,7 @@ class TrendTransaksiController extends Controller
             {
                 $query->where('store_id', $request->store_id);
 
-            })->whereDate('created_at', Carbon::parse($start)->addDay($w-1))->get()->sum('price');
+            })->whereDate('created_at', Carbon::parse($start)->addDay($w))->get()->sum('price');
             $week[$w]["waktu"] = Carbon::parse($start)->addDay($w);
         }
         return response()->json([
