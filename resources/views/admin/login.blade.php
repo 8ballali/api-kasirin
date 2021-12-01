@@ -262,7 +262,6 @@ footer a {
     <title>LOGIN</title>
 </head>
 <body>
-
 <div class="container" id="container">
 	<div class="form-container  sign-up-container" >
 		<form action="{{route('register')}}" method="post">
@@ -274,7 +273,7 @@ footer a {
 		</form>
 	</div>
 	<div class="form-container sign-in-container">
-		<form action="{{route('login')}}" method="post">
+		<form action="{{route('login')}}" method="get">
             {{ csrf_field() }}
 			<h1>Sign in</h1>
 			<input type="email" name="email" class="form-control" placeholder="Email">

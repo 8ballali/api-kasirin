@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserDataResource;
 use App\Models\Role;
 use App\Models\Subscriber;
 use App\Models\Subsrciption;
@@ -99,7 +100,8 @@ class AuthController extends Controller
                 'message' => 'Authenticated',
                 'access_token' => $tokenResult,
                 'token_type' => 'Bearer',
-                'data' => $user
+                'data' => $user,
+                // 'subscribers' => new UserDataResource($user)
             ]);
         } catch (Exception $error ) {
             return response()->json([

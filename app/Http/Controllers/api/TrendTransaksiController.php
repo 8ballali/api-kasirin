@@ -9,12 +9,32 @@ use Illuminate\Http\Request;
 
 class TrendTransaksiController extends Controller
 {
-    public function daily(Request $request)
+    public function monthly(Request $request)
     {
-       $date = Carbon::now()->day(1)->month($request->month)->year($request->year);
+       $date = Carbon::create($request->year, $request->month);
        $dayOfMonth = $date->daysInMonth;
-       for ($i=1; $i <= $dayOfMonth; $i++) {
-            $trends[] = Transaction::whereDay('created_at', $i)->whereMonth('created_at', $request->month)->whereYear('created_at', $request->year)->sum('price');
+       if (!$request->store_id) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Please Insert Your Store'
+        ],200);
+        }
+
+        if (!$request->year) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please Insert Year'
+            ],200);
+        }
+        $trends = [];
+       for ($i=0; $i < $dayOfMonth; $i++) {
+            $trends[$i]["Total Transaksi"] = Transaction::when(($request->get('store_id')), function ($query) use ($request)
+            {
+                $query->where('store_id', $request->store_id);
+            })->whereDay('created_at', $i)->whereMonth('created_at',  Carbon::parse($date)->setDay($i+2))->whereYear('created_at', $request->year)
+            ->get()->sum('price');
+            $trends[$i]["Waktu"] = Carbon::parse($date)->setDay($i+2);
+
        }
        return response()->json([
            'data' => $trends
@@ -22,14 +42,80 @@ class TrendTransaksiController extends Controller
     }
     public function yearly(Request $request)
     {
-        $date = Carbon::parse(now()->month(12)->year($request->year));
-        for ($i=1; $i <= $date ; $i++) {
-            $trends_year=Transaction::whereMonth('created_at', $i)->whereYear('created_at', $request->year)->sum('price');
+        $date = Carbon::now()->startOfYear();
+        $date = Carbon::create($request->year);
+        // dd($date);
+        if (!$request->store_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please Insert Your Store'
+            ],200);
+        }
+        // if (!$request->year) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Please Insert Year'
+        //     ],200);
+        // }
+        $month = [];
+        for ($m=0; $m < 12 ; $m++) {
+            $month[$m]["Jumlah Transaksi"]=Transaction::when(($request->get('store_id')), function ($query) use ($request)
+            {
+                $query->where('store_id', $request->store_id);
+
+            })->whereYear('created_at', Carbon::parse($date)->setMonth($m+2))->get()->sum('price');
+            $month[$m]["Waktu"] = Carbon::parse($date)->setMonth($m+2);
         }
         return response()->json([
-            'data' => $trends_year
+            'data' => $month
         ],200);
     }
 
+    public function weekly(Request $request)
+    {
+        $now = Carbon::now()->month($request->month)->year($request->year);
+        $start = $now->startOfWeek()->format('Y-m-d H:i:s');
+        $week = [];
+        for ($w=0; $w < 7 ; $w++) {
+            $week[$w]["Total Transaksi"] = Transaction::when(($request->get('store_id')), function ($query) use ($request)
+            {
+                $query->where('store_id', $request->store_id);
 
+            })->whereDate('created_at', Carbon::parse($start)->addDay($w-1))->get()->sum('price');
+            $week[$w]["Waktu"] = Carbon::parse($start)->addDay($w);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Trend Transaksi Weekly',
+            'data'    => $week
+        ],200);
+    }
+    public function daily(Request $request)
+    {
+
+        $now = Carbon::parse($request->tanggal)->format('Y-m-d');
+        $day = [];
+        for ($d=0; $d < 24 ; $d++) {
+            if ($d < 10) {
+                $hours="0".$d;
+            }else{
+                $hours=$d;
+            }
+            $time = $now.' '.$hours.":00:00";
+            $day[$d]["total_transaksi"] = Transaction::when(($request->get('store_id')), function ($query) use ($request)
+            {
+                $query->where('store_id', $request->store_id);
+            })
+            ->whereDate('created_at',\Carbon\Carbon::parse($time))
+            ->whereTime('created_at', '>=', \Carbon\Carbon::parse($time))
+            ->whereTime('created_at', '<=', \Carbon\Carbon::parse($time)->addHours(1))
+            ->get()->sum('price');
+            $day[$d]["waktu"] = \Carbon\Carbon::parse($time)."-".\Carbon\Carbon::parse($time)->addHours(1);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Trend Daily',
+            'data'    => $day
+        ],200);
+    }
 }

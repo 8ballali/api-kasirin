@@ -125,4 +125,5 @@ class StatistikPendapatan extends Controller
                 'data' => $income_result
             ],200);
     }
+
 }

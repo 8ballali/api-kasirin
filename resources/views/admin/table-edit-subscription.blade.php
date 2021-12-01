@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit SUbscription</title>
 
-    <link rel="shortcut icon" href="{{url('assets/images/site-removebg.png')}}" type="image/png">
+    <link rel="shortcut icon" href="{{url('assets/images/logo-pelaris-01.png')}}" type="image/png">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
