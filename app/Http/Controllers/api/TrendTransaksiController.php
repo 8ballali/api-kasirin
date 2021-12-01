@@ -28,12 +28,12 @@ class TrendTransaksiController extends Controller
         }
         $trends = [];
        for ($i=0; $i < $dayOfMonth; $i++) {
-            $trends[$i]["Total Transaksi"] = Transaction::when(($request->get('store_id')), function ($query) use ($request)
+            $trends[$i]["total_transaksi"] = Transaction::when(($request->get('store_id')), function ($query) use ($request)
             {
                 $query->where('store_id', $request->store_id);
             })->whereDay('created_at', $i)->whereMonth('created_at',  Carbon::parse($date)->setDay($i+2))->whereYear('created_at', $request->year)
             ->get()->sum('price');
-            $trends[$i]["Waktu"] = Carbon::parse($date)->setDay($i+2);
+            $trends[$i]["waktu"] = Carbon::parse($date)->setDay($i+2);
 
        }
        return response()->json([
@@ -59,12 +59,12 @@ class TrendTransaksiController extends Controller
         // }
         $month = [];
         for ($m=0; $m < 12 ; $m++) {
-            $month[$m]["Jumlah Transaksi"]=Transaction::when(($request->get('store_id')), function ($query) use ($request)
+            $month[$m]["total_transaksi"]=Transaction::when(($request->get('store_id')), function ($query) use ($request)
             {
                 $query->where('store_id', $request->store_id);
 
             })->whereYear('created_at', Carbon::parse($date)->setMonth($m+2))->get()->sum('price');
-            $month[$m]["Waktu"] = Carbon::parse($date)->setMonth($m+2);
+            $month[$m]["waktu"] = Carbon::parse($date)->setMonth($m+2);
         }
         return response()->json([
             'data' => $month
@@ -77,12 +77,12 @@ class TrendTransaksiController extends Controller
         $start = $now->startOfWeek()->format('Y-m-d H:i:s');
         $week = [];
         for ($w=0; $w < 7 ; $w++) {
-            $week[$w]["Total Transaksi"] = Transaction::when(($request->get('store_id')), function ($query) use ($request)
+            $week[$w]["total_ransaksi"] = Transaction::when(($request->get('store_id')), function ($query) use ($request)
             {
                 $query->where('store_id', $request->store_id);
 
             })->whereDate('created_at', Carbon::parse($start)->addDay($w-1))->get()->sum('price');
-            $week[$w]["Waktu"] = Carbon::parse($start)->addDay($w);
+            $week[$w]["waktu"] = Carbon::parse($start)->addDay($w);
         }
         return response()->json([
             'success' => true,
