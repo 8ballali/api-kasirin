@@ -76,7 +76,7 @@ class TrendTransaksiController extends Controller
         $start = $now->startOfWeek()->format('Y-m-d H:i:s');
         $week = [];
         for ($w=0; $w < 7 ; $w++) {
-            $week[$w]["total_ransaksi"] = Transaction::when(($request->get('store_id')), function ($query) use ($request)
+            $week[$w]["total_transaksi"] = Transaction::when(($request->get('store_id')), function ($query) use ($request)
             {
                 $query->where('store_id', $request->store_id);
 
@@ -109,7 +109,7 @@ class TrendTransaksiController extends Controller
             ->whereTime('created_at', '>=', \Carbon\Carbon::parse($time))
             ->whereTime('created_at', '<=', \Carbon\Carbon::parse($time)->addHours(1))
             ->get()->sum('price');
-            $day[$d]["waktu"] = \Carbon\Carbon::parse($time)."-".\Carbon\Carbon::parse($time)->addHours(1);
+            $day[$d]["waktu"] = \Carbon\Carbon::parse($time)."-".\Carbon\Carbon::parse($time)->addHours(1)->format('H:i:s');
         }
         return response()->json([
             'success' => true,
