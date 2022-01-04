@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     public function index(Request $request){
-        $product = Product::with('category.store')->where('category_id', $request->category_id)
+        $product = Product::with('category.store')
+        ->where('category_id', $request->category_id)
         ->when(($request->get('category_id')), function ($query) use ($request)
         {
             $query->where('category_id', $request->category_id);

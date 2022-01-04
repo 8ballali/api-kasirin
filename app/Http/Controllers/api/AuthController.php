@@ -3,13 +3,9 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserDataResource;
-use App\Models\Role;
 use App\Models\Subscriber;
 use App\Models\Subsrciption;
 use App\Models\User;
-use App\Models\User_Role;
-use App\Models\User_Store;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -17,8 +13,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\Response;
+
 
 class AuthController extends Controller
 {
@@ -34,7 +29,7 @@ class AuthController extends Controller
         ];
         $avatar = null;
         if ($request->avatar instanceof UploadedFile) {
-            $avatar = $request->avatar->store('image', 'public');
+            $avatar = $request->avatar->store('avatar', 'public');
             $data['avatar'] = $avatar;
         }else{
             unset($data['avatar']);

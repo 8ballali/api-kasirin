@@ -20,9 +20,9 @@ class StoreController extends Controller
      */
     public function index(Request $request)
     {
-        $stores = Store::when(($request->header('user_id')), function ($query) use ($request)
+        $stores = Store::when(($request->get('user_id')), function ($query) use ($request)
         {
-            $query->where('user_id', $request->header('user_id'));
+            $query->where('user_id', $request->get('user_id'));
         })->when(($request->get('name')), function ($query) use ($request)
         {
             $query->where('name', 'like', '%'. $request->name . '%');

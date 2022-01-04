@@ -16,7 +16,7 @@ class SubscriberController extends Controller
     public function index(Request $request){
         $subscriber = Subscriber::with('user')->with('subscription')->when(($request->get('subscription_id')), function ($query) use ($request)
         {
-            $query->where('subscription_id', $request->header('subscription_id'));
+            $query->where('subscription_id', $request->get('subscription_id'));
         })
         ->get();
         $response = [
@@ -41,7 +41,6 @@ class SubscriberController extends Controller
     {
         $data = $request->all();
         $rules = [
-
             'subscription_id'  => 'required',
         ];
         $subscriber = Subscriber::where('user_id',$id)->first();
