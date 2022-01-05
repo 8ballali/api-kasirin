@@ -109,7 +109,7 @@ class TrendTransaksiController extends Controller
             ->whereTime('created_at', '>=', \Carbon\Carbon::parse($time))
             ->whereTime('created_at', '<=', \Carbon\Carbon::parse($time)->addHours(1))
             ->get()->sum('price');
-            $day[$d]["waktu"] = \Carbon\Carbon::parse($time)->format('H:i:s');
+            $day[$d]["waktu"] = \Carbon\Carbon::parse($time)->format('Y-m-d H:i:s');
         }
         return response()->json([
             'success' => true,
