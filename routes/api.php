@@ -109,7 +109,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('subscriber/store', [SubscriberController::class, 'store']);
     Route::post('subscriber/edit/{id}', [SubscriberController::class, 'update']);
     Route::resource('/stores', StoreController::class)->except(['create', 'edit']);
-    Route::resource('/privacy', PrivacyPolicyController::class)->except(['create', 'edit']);
     Route::resource('/transaction', TransactionController::class)->except(['create', 'edit']);
     Route::resource('/detail-transaction', TransactionDetailController::class)->except(['create', 'edit']);
     Route::get('stats/product/daily', [StatistikProduct::class, 'daily']);
@@ -133,6 +132,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('trend/transaction/monthly', [TrendTransaksiController::class, 'monthly']);
     Route::get('trend/transaction/yearly', [TrendTransaksiController::class, 'yearly']);
     Route::get('trend/transaction/weekly', [TrendTransaksiController::class, 'weekly']);
+    Route::get('privacy', [PrivacyPolicyController::class, 'index']);
+    Route::get('privacy/{id}', [PrivacyPolicyController::class, 'show']);
+    Route::post('privacy/store', [PrivacyPolicyController::class, 'store']);
+    Route::post('privacy/edit/{privacy}', [PrivacyPolicyController::class, 'update']);
+    Route::delete('privacy/delete/{privacy}', [PrivacyPolicyController::class, 'delete']);
     Route::get('/test', function () {
         return 'oek';
     });
